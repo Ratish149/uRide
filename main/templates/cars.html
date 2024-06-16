@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+uRide - Cars
+{%endblock title %}
+
+{% block content %}
+
+<!-- content begin -->
+<div class="no-bottom no-top zebra" id="content">
+  <div id="top"></div>
+
+  <!-- section begin -->
+  <section id="subheader" class="jarallax text-light">
+    <img src="{% static 'images/background/2.jpg' %} " class="jarallax-img" alt="" />
+    <div class="center-y relative text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <h1>Cars</h1>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- section close -->
+
+  <section id="section-cars">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-lg-3">
+          <form method="get" id="filter-form">
+            <div class="item_filter_group">
+              <h4>Vehicle Type</h4>
+              <div class="de_form">
+
+                {% for type in vehicle_types %}
+                    <div class="de_checkbox">
+                        <input id="vehicle_type_{{ type.id }}" name="vehicle_type" type="checkbox" value="{{ type.id }}"
+                            {% if type.id in selected_vehicle_types %}checked{% endif %} onchange="submitForm()" />
+                        <label for="vehicle_type_{{ type.id }}">{{ type.name }}</label>
+                    </div>
+                {% endfor %}
+
+
+              </div>
+            </div>
+
+            <div class="item_filter_group">
+              <h4>Vehicle Model</h4>
+              <div class="de_form">
+                {% for model in vehicle_models %}
+                <div class="de_checkbox">
+                  <input id="vehicle_model_{{ model.id }}" name="vehicle_model" type="checkbox" value="{{ model.id }}"
+                    {% if model.id in selected_vehicle_models %}checked{% endif %} onchange="submitForm()" />
+                  <label for="vehicle_model_{{ model.id }}">{{ model.name }}</label>
+                </div>
+                {% endfor %}
+
+              </div>
+            </div>
+
+            <div class="item_filter_group">
+            <h4>Car Seats</h4>
+            <div class="de_form">
+                <div class="de_checkbox">
+                    <input id="car_seat_2" name="car_seat" type="checkbox" value="car_seat_2"
+                        {% if 'car_seat_2' in selected_car_seats %}checked{% endif %} onchange="submitForm()" />
+                    <label for="car_seat_2">2 seats</label>
+                </div>
+                <div class="de_checkbox">
+                    <input id="car_seat_4" name="car_seat" type="checkbox" value="car_seat_4"
+                        {% if 'car_seat_4' in selected_car_seats %}checked{% endif %} onchange="submitForm()" />
+                    <label for="car_seat_4">4 seats</label>
+                </div>
+                <div class="de_checkbox">
+                    <input id="car_seat_6" name="car_seat" type="checkbox" value="car_seat_6"
+                        {% if 'car_seat_6' in selected_car_seats %}checked{% endif %} onchange="submitForm()" />
+                    <label for="car_seat_6">6 seats</label>
+                </div>
+                <div class="de_checkbox">
+                    <input id="car_seat_6_plus" name="car_seat" type="checkbox" value="car_seat_6_plus"
+                        {% if 'car_seat_6_plus' in selected_car_seats %}checked{% endif %} onchange="submitForm()" />
+                    <label for="car_seat_6_plus">6+ seats</label>
+                </div>
+            </div>
+        </div>
+
+            <div class="item_filter_group">
+              <h4>Gear Type</h4>
+              <div class="de_form">
+                {% for gear in gear_types %}
+                <div class="de_checkbox">
+                  <input id="gear_type_{{ gear.id }}" name="gear_type" type="checkbox" value="{{ gear.id }}"
+                      {% if gear.id in selected_gear_types %}checked{% endif %} onchange="submitForm()" />
+                  <label for="gear_type_{{ gear.id }}">{{ gear.name }}</label>
+              </div>
+                {% endfor %}
+
+
+              </div>
+            </div>
+
+            <div class="item_filter_group">
+              <h4>Price (Rs.)</h4>
+              <div class="price-input">
+                <div class="field">
+                  <span>Min</span>
+                  <input type="number" class="input-min" value="0" />
+                </div>
+                <div class="field">
+                  <span>Max</span>
+                  <input type="number" class="input-max" value="2000" />
+                </div>
+              </div>
+              <div class="slider">
+                <div class="progress"></div>
+              </div>
+              <div class="range-input">
+                <input type="range" class="range-min" min="0" max="2000" value="0" step="1" />
+                <input type="range" class="range-max" min="0" max="2000" value="2000" step="1" />
+              </div>
+              
+            </div>
+          </form>
+        </div>
+        
+
+        <div class="col-lg-9">
+          <div class="row">
+          {% if vehicles %}
+  
+
+            {% for vehicle in vehicles %}
+            <div class="col-xl-4 col-lg-6">
+              <div class="de-item mb30">
+                <div class="d-img">
+                  <img src="{{vehicle.vehicle_front_image.url}}" class="img-fluid" alt="" />
+                </div>
+                <div class="d-info">
+                  <div class="d-text">
+                    <a href="{% url 'car_detail' vehicle.id %}">
+                    <h4>{{vehicle.vehicle_name}}</h4>
+                    </a>
+                    <div class="d-atr-group">
+                      <span class="d-atr"><img src="{% static 'images/icons/1-green.svg' %} " alt="" />
+                        {{ vehicle.vehicle_seat }}</span>
+                      <span class="d-atr"><img src="{% static 'images/icons/fuel-green.svg' %}" alt="" />
+                        {{vehicle.vehicle_type }}
+                        </span>
+                      <span class="d-atr"><img src="{% static 'images/icons/gear-green.svg' %}" alt="" />
+                        {{vehicle.vehicle_gear }}</span>
+                      <span class="d-atr"><img src="{% static 'images/icons/4-green.svg' %}" alt="" />
+                        {{vehicle.vehicle_model }}</span>
+                    </div>
+                    <div class="d-price">
+                      Daily rate from <span>Rs. {{ vehicle.price_per_day }}</span>
+                      <a class="btn-main" href="{% url 'booking' vehicle.id %}">Rent Now</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+
+            {% else %}
+            <h3>No Vehicles Found</h3>
+            {% endif %}
+
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+<!-- content close -->
+
+<a href="#" id="back-to-top"></a>
+<script>
+  function submitForm() {
+    document.getElementById('filter-form').submit();
+  }
+</script>
+{% endblock content %}

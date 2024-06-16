@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+uRide - Register
+{% endblock title %}
+
+{% block content %}
+
+<!-- content begin -->
+<div class="no-bottom no-top" id="content">
+    <div id="top"></div>
+
+    <!-- section begin -->
+    <section id="subheader" class="jarallax text-light">
+        <img src="{% static 'images/background/subheader.jpg' %} " class="jarallax-img" alt="">
+        <div class="center-y relative text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h1>Register</h1>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- section close -->
+
+
+
+    <section aria-label="section">
+        <div class="container">
+            <div class="row">
+                {% if messages %}
+                {% for message in messages %}
+
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>{{message}}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                {% endfor %}
+
+                {% endif %}
+                <div class="col-md-8 offset-md-2">
+                    <h3>Update Your Profile</h3>
+                    <div class="spacer-10"></div>
+
+                    <form name="contactForm" enctype="multipart/form-data" id='contact_form' class="form-border" method="POST"
+                        action="{% url 'reg_profile_detail' %}">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="field-set">
+                                    {{form.as_p}}
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="col-md-12">
+
+                            <div id='submit' class="pull-left">
+                                <input type='submit' id='send_message' value='Register Now' class="btn-main color-2">
+                            </div>
+
+                            <div id='mail_success' class='success'>Your message has been sent successfully.</div>
+                            <div id='mail_fail' class='error'>Sorry, error occured this time sending your message.
+                            </div>
+                            <div class="clearfix"></div>
+
+                        </div>
+
+                </div>
+                </form>
+                <br>
+                <p>Already have an account?<a href="{% url 'login' %}"> Login</a></p>
+
+            </div>
+        </div>
+</div>
+</section>
+
+
+</div>
+
+
+<!-- content close -->
+
+<a href="#" id="back-to-top"></a>
+{% endblock content %}

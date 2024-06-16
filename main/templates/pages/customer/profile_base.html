@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+uRide - Profile
+{% endblock title %}
+
+{% block content %}
+
+<!-- content begin -->
+<div class="no-bottom no-top zebra" id="content">
+    <div id="top"></div>
+
+    <!-- section begin -->
+    <section id="subheader" class="jarallax text-light">
+        <img src="{% static 'images/background/14.jpg' %} " class="jarallax-img" alt="">
+        <div class="center-y relative text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h1>
+                            {% block profile_title %}
+                              
+                            {% endblock profile_title %}
+                            </h1>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- section close -->
+
+    <section id="section-settings" class="bg-gray-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 mb30">
+                    <div class="card padding30 rounded-5">
+                        <div class="profile_avatar">
+                            {% if profile.profile_picture %}
+                            <div class="profile_img">
+                                <img src="{{profile.profile_picture.url}}" alt="">
+                            </div>
+                            {% else %}
+                            <div class="profile_img">
+                                <img src="{% static 'images/profile/1.jpg' %}" alt="">
+                            </div>
+                            {% endif %}
+                            <div class="profile_name">
+                                <h4>
+                                    {{user.username}}
+                                    <span class="profile_username text-gray">{{user.email}}</span>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="spacer-20"></div>
+                        <ul class="menu-col">
+
+                            <li><a href="{% url 'customer_profile' %}" class="{% if request.path == '/profile/' %}
+                              active
+                            {% endif %}"><i class="fa fa-user"></i>My
+                                    Profile</a></li>
+                            <li><a href="{% url 'account_booking' %}" class="{% if request.path == '/account-booking/' %}
+                                active
+                              {% endif %}"><i class="fa fa-calendar"></i>My Orders</a></li>
+                            <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>Sign Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                {% block profile_content %}
+
+                {% endblock profile_content %}
+            </div>
+        </div>
+    </section>
+
+    <a href="#" id="back-to-top"></a>
+    {% endblock content %}

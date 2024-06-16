@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+uRide - Home
+{%endblock title %}
+
+{% block content %}
+
+<!-- content begin -->
+<div class="no-bottom no-top" id="content">
+    <div id="top"></div>
+    <section id="section-hero" aria-label="section" class="full-height vertical-center"
+        data-bgimage="url(images/background/2.jpg) bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="spacer-double sm-hide"></div>
+                <div class="col-lg-6">
+                    <h4><span class="id-color">Plan your trip now</span></h4>
+                    <div class="spacer-10"></div>
+                    <h1>Explore the world with comfortable car</h1>
+                    <p class="lead">Embark on unforgettable adventures and discover the world in unparalleled comfort
+                        and style with our fleet of exceptionally comfortable cars.</p>
+
+                    <a class="btn-main" href="{% url 'cars' %}">Choose a Car</a>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="{% static 'images/misc/car-2.png' %} " class="img-fluid" alt="">
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="section-cars" class="no-top">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 offset-lg-3 text-center">
+                    <h2>Our Vehicle Fleet</h2>
+                    <p>Driving your dreams to reality with an exquisite fleet of versatile vehicles for unforgettable
+                        journeys.</p>
+                    <div class="spacer-20"></div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div id="items-carousel" class="owl-carousel wow fadeIn">
+                    {% for car in vehicle %}
+                         
+                    <div class="col-lg-12">
+                        <div class="de-item mb30">
+                            <div class="d-img">
+                                <img src="{{ car.vehicle_front_image.url }} " class="img-fluid" alt="">
+                            </div>
+                            <div class="d-info">
+                                <div class="d-text">
+                                    <a href="{% url 'car_detail' car.id %}">
+                                    <h4>{{ car.vehicle_name }}</h4>
+                                </a>
+                                    <div class="d-atr-group">
+                                        <span class="d-atr"><img src="{% static 'images/icons/1-green.svg' %}"
+                                                alt="">{{ car.vehicle_seat }}</span>
+                                        <span class="d-atr"><img src="{% static 'images/icons/2-green.svg' %}"
+                                                alt="">{{ car.vehicle_luggage_no }}</span>
+                                        <span class="d-atr"><img src="{% static 'images/icons/3-green.svg' %}"
+                                                alt="">{{ car.vehicle_door }}</span>
+                                        <span class="d-atr"><img src="{% static 'images/icons/4-green.svg' %}"
+                                                alt="">{{ car.vehicle_type }}</span>
+                                    </div>
+                                    <div class="d-price">
+                                        Daily rate from <span>Rs. {{ car.price_per_day }}</span>
+                                        <a class="btn-main" href="car-single.html">Rent Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+   
+
+    <section aria-label="section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 offset-lg-3 text-center">
+                    <h2>Our Features</h2>
+                    <p>Discover a world of convenience, safety, and customization, paving the way for unforgettable
+                        adventures and seamless mobility solutions.</p>
+                    <div class="spacer-20"></div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-lg-3">
+                    <div class="box-icon s2 p-small mb20 wow fadeInRight" data-wow-delay=".5s">
+                        <i class="fa bg-color fa-trophy"></i>
+                        <div class="d-inner">
+                            <h4>First class services</h4>
+                            Where luxury meets exceptional care, creating unforgettable moments and exceeding your every
+                            expectation.
+                        </div>
+                    </div>
+                    <div class="box-icon s2 p-small mb20 wow fadeInL fadeInRight" data-wow-delay=".75s">
+                        <i class="fa bg-color fa-road"></i>
+                        <div class="d-inner">
+                            <h4>24/7 road assistance</h4>
+                            Reliable support when you need it most, keeping you on the move with confidence and peace of
+                            mind.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="{% static 'images/misc/car-2.png' %} " alt="" class="img-fluid wow fadeInUp">
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="box-icon s2 d-invert p-small mb20 wow fadeInL fadeInLeft" data-wow-delay="1s">
+                        <i class="fa bg-color fa-tag"></i>
+                        <div class="d-inner">
+                            <h4>Quality at Minimum Expense</h4>
+                            Unlocking affordable brilliance with elevating quality while minimizing costs for maximum
+                            value.
+                        </div>
+                    </div>
+                    <div class="box-icon s2 d-invert p-small mb20 wow fadeInL fadeInLeft" data-wow-delay="1.25s">
+                        <i class="fa bg-color fa-map-pin"></i>
+                        <div class="d-inner">
+                            <h4>Free Pick-Up & Drop-Off</h4>
+                            Enjoy free pickup and drop-off services, adding an extra layer of ease to your car rental
+                            experience.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="section-fun-facts" class="bg-color text-light">
+        <div class="container">
+            <div class="row g-custom-x force-text-center">
+                <div class="col-md-3 col-sm-6 mb-sm-30">
+                    <div class="de_count wow fadeInUp">
+                        <h3 class="timer" data-to="15425" data-speed="3000">0</h3>
+                        Trips Powered
+                        <p class="d-small">Lorem ipsum adipisicing officia in adipisicing do velit sit tempor ea
+                            consectetur.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-sm-30">
+                    <div class="de_count wow fadeInUp">
+                        <h3 class="timer" data-to="8745" data-speed="3000">0</h3>
+                        Happy Customers
+                        <p class="d-small">Lorem ipsum adipisicing officia in adipisicing do velit sit tempor ea
+                            consectetur.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-sm-30">
+                    <div class="de_count wow fadeInUp">
+                        <h3 class="timer" data-to="235" data-speed="3000">0</h3>
+                        Fleets Vehicle
+                        <p class="d-small">Lorem ipsum adipisicing officia in adipisicing do velit sit tempor ea
+                            consectetur.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-sm-30">
+                    <div class="de_count wow fadeInUp">
+                        <h3 class="timer" data-to="15" data-speed="3000">0</h3>
+                        Years Experience
+                        <p class="d-small">Lorem ipsum adipisicing officia in adipisicing do velit sit tempor ea
+                            consectetur.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="text-light jarallax" aria-label="section">
+        <img src=" {% static 'images/background/3.jpg' %} " alt="" class="jarallax-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-light">
+                    <div class="container-timeline">
+                        <ul>
+                            <li>
+                                <h4>Choose a vehicle</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore</p>
+                            </li>
+                            <li>
+                                <h4>Pick location &amp; date</h4>
+                                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                    fugiat nulla</p>
+                            </li>
+                            <li>
+                                <h4>Make a booking</h4>
+                                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                                    ea commodo</p>
+                            </li>
+                            <li>
+                                <h4>Sit back &amp; relax</h4>
+                                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                                    ea commodo</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="section-call-to-action" class="bg-color text-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <h2>Call us for further information. Rentaly customer care is here to help you anytime.</h2>
+                    <div class="spacer-20"></div>
+                    <a href="#" class="btn-main btn-line">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="section-faq">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <span class="subtitle">Do You Have</h2></span>
+                    <h2>Any Questions?</h2>
+                    <div class="spacer-20"></div>
+                </div>
+            </div>
+            <div class="row g-custom-x">
+                <div class="col-md-6 wow fadeInUp">
+                    <div class="accordion secondary">
+                        <div class="accordion-section">
+                            <div class="accordion-section-title" data-tab="#accordion-1">
+                                How do I get started with Car Rental?
+                            </div>
+                            <div class="accordion-section-content" id="accordion-1">
+                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+                                    voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
+                                    occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
+                                    mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
+                                    expedita distinctio.</p>
+                            </div>
+                            <div class="accordion-section-title" data-tab="#accordion-2">
+                                Can I rent a car with a debit card??
+                            </div>
+                            <div class="accordion-section-content" id="accordion-2">
+                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+                                    voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
+                                    occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
+                                    mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
+                                    expedita distinctio.</p>
+                            </div>
+                            <div class="accordion-section-title" data-tab="#accordion-3">
+                                What kind of Car Rental do I need?
+                            </div>
+                            <div class="accordion-section-content" id="accordion-3">
+                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+                                    voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
+                                    occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
+                                    mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
+                                    expedita distinctio.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 wow fadeInUp">
+                    <div class="accordion secondary">
+                        <div class="accordion-section">
+                            <div class="accordion-section-title" data-tab="#accordion-b-4">
+                                What is a rental car security deposit?
+                            </div>
+                            <div class="accordion-section-content" id="accordion-b-4">
+                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+                                    voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
+                                    occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
+                                    mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
+                                    expedita distinctio.</p>
+                            </div>
+                            <div class="accordion-section-title" data-tab="#accordion-b-5">
+                                Can I cancel or modify my reservation?
+                            </div>
+                            <div class="accordion-section-content" id="accordion-b-5">
+                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+                                    voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
+                                    occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
+                                    mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
+                                    expedita distinctio.</p>
+                            </div>
+                            <div class="accordion-section-title" data-tab="#accordion-b-6">
+                                Is it possible to extend my rental period?
+                            </div>
+                            <div class="accordion-section-content" id="accordion-b-6">
+                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+                                    voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
+                                    occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
+                                    mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
+                                    expedita distinctio.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+</div>
+<!-- content close -->
+<a href="#" id="back-to-top"></a>
+
+{% endblock content %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+uRide - Profile
+{% endblock title %}
+
+{% block content %}
+
+<!-- content begin -->
+<div class="no-bottom no-top zebra" id="content">
+    <div id="top"></div>
+
+    <!-- section begin -->
+    <section id="subheader" class="jarallax text-light">
+        <img src="{% static 'images/background/14.jpg' %} " class="jarallax-img" alt="">
+        <div class="center-y relative text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h1>My Profile</h1>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- section close -->
+
+    <section id="section-settings" class="bg-gray-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 mb30">
+                    <div class="card padding30 rounded-5">
+                        <div class="profile_avatar">
+                            {% if profile.profile_picture %}
+                            <div class="profile_img">
+                                <img src="{{profile.profile_picture.url}}" alt="">
+                            </div>
+                            {% else %}
+                            <div class="profile_img">
+                                <img src="{% static 'images/profile/1.jpg' %}" alt="">
+                            </div>
+                            {% endif %}
+                            <div class="profile_name">
+                                <h4>
+                                    {{user.username}}
+                                    <span class="profile_username text-gray">{{user.email}}</span>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="spacer-20"></div>
+                        <ul class="menu-col">
+
+                            <li><a href="{% url 'owner_profile' %}"><i class="fa fa-user"></i>My
+                                    Profile</a></li>
+                            <li><a href="{% url 'register_vehicle' %}" class="active"><i class="fa fa-calendar" ></i>Add Vehicle</a></li>
+                            <li><a href="{% url 'your_vehicle' %}"><i class="fa fa-calendar"></i>Your Vehicle</a></li>
+                            <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>Sign Out</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="card padding40  rounded-5">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form id="form-create-item" enctype="multipart/form-data" class="form-border" method="POST">
+                                    {% csrf_token %}
+                                    <div class="de_tab tab_simple">
+
+                                        <ul class="de_nav">
+                                            <li class="active"><span>Add Vehicle</span></li>
+                                            <!-- <li><span>Notifications</span></li> -->
+                                        </ul>
+
+                                        <div class="de_tab_content">
+
+                                            <div class="row">
+                                                
+                                                {{ form.as_p }}
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <input type="submit" id="submit" class="btn-main" value="Add vehicle">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+<!-- content close -->
+
+<a href="#" id="back-to-top"></a>
+{% endblock content %}

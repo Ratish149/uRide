@@ -1,0 +1,49 @@
+{% extends "pages/customer/profile_base.html" %}
+{% block profile_title %}
+My Profile
+{% endblock profile_title %}
+
+{% block profile_content %}
+
+<div class="col-lg-9">
+    <div class="card padding40  rounded-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <form id="form-create-item" enctype="multipart/form-data" class="form-border" method="POST">
+                    {% csrf_token %}
+                    <div class="de_tab tab_simple">
+
+                        <ul class="de_nav">
+                            <li class="active"><span>Profile</span></li>
+                            <!-- <li><span>Notifications</span></li> -->
+                        </ul>
+
+                        <div class="de_tab_content">
+
+                            <div class="row">
+                                {{ profile_form.as_p }}
+                                {{ user_form.as_p }}
+
+                                <div class="profile_img">
+                                    <p>Licence Image</p>
+                                    <img src="{{profile.licence_picture.url}}" alt="">
+                                </div>
+                                <br>
+                            </div>
+
+                        </div>
+                    </div>
+<br>
+                    <input type="submit" id="submit" class="btn-main" value="Update profile">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</div>
+<!-- content close -->
+
+{% endblock profile_content %}

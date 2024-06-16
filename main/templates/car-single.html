@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+uRide - Cars
+{%endblock title %}
+
+
+
+{% block content %}
+
+<!-- content begin -->
+<div class="no-bottom no-top zebra" id="content">
+    <div id="top"></div>
+
+    <!-- section begin -->
+    <section id="subheader" class="jarallax text-light">
+        <img src="{% static 'images/background/2.jpg' %} " class="jarallax-img" alt="">
+        <div class="center-y relative text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h1>Vehicle Fleet</h1>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- section close -->
+
+    <section id="section-car-details">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-6">
+                    <div id="slider-carousel" class="owl-carousel">
+                        <div class="item">
+                            <img src="{{data.vehicle_front_image.url}}" alt="">
+                        </div>
+                        <div class="item">
+                            <img src="{{data.vehicle_right_image.url}}" alt="">
+                        </div>
+                        <div class="item">
+                            <img src="{{data.vehicle_left_image.url}}" alt="">
+                        </div>
+                        <div class="item">
+                            <img src="{{data.vehicle_back_image.url}}" alt="">
+                        </div>
+                    </div>
+                    <br>
+                    <!--Reviews Container-->
+                    <div class="tab" id="prod-reviews">
+                        <h3>Reviews</h3>
+                        <hr>
+                        <div class="reviews-container">
+                            <!--Reviews-->
+                            {% if reviews %}
+                            {% for review in reviews %}
+
+                            <article class="review-box clearfix">
+                                <figure class="rev-thumb"><img width="120px"
+                                        src="{{review.user.profile.profile_picture.url}}" alt=""></figure>
+                                <div class="rev-content">
+                                    {% for i in range %}
+                                    <i class="fa {% if review.rating >= i %}fa-star{% else %}fa-star-o{% endif %}"
+                                        style="color: gold !important;"></i>
+                                    {% endfor %}
+                                    <div class="rev-info">{{review.user.username}} – {{review.created_at}}: </div>
+                                    <div class="rev-text">
+                                        <p>{{review.comment}}</p>
+                                    </div>
+                                </div>
+                            </article>
+                            {% endfor %}
+                            {% else %}
+
+                            <p>No reviews yet</p>
+
+                            {% endif %}
+
+                        </div>
+
+                        <!--Add Review-->
+                        <div class="add-review">
+                            <h3>Add a Review</h3>
+
+                            <form class="form" method="post">
+                                {% csrf_token %}
+                                <div class="row clearfix">
+                                    {{form.as_p}}
+                                    <input type='submit' id='send_message' value='Add Review'
+                                        class="btn-main btn-fullwidth">
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <h3>{{data.vehicle_name}}</h3>
+                    <p>{{data.vehicle_description}}</p>
+
+                    <div class="spacer-10"></div>
+
+                    <h4>Specifications</h4>
+                    <div class="de-spec">
+                        <div class="d-row">
+                            <span class="d-title">Number</span>
+                            <spam class="d-value">{{data.vehicle_number}}</spam>
+                        </div>
+                        <div class="d-row">
+                            <span class="d-title">Body</span>
+                            <spam class="d-value">{{data.vehicle_type}}</spam>
+                        </div>
+                        <div class="d-row">
+                            <span class="d-title">Seat</span>
+                            <spam class="d-value">{{data.vehicle_seat}} seats</spam>
+                        </div>
+                        <div class="d-row">
+                            <span class="d-title">Fuel Type</span>
+                            <spam class="d-value">{{data.vehicle_model}}</spam>
+                        </div>
+
+                        <div class="d-row">
+                            <span class="d-title">Transmission</span>
+                            <spam class="d-value">{{data.vehicle_gear}}</spam>
+                        </div>
+
+                        <div class="d-row">
+                            <span class="d-title">Color</span>
+                            <spam class="d-value">{{data.vehicle_color}}</spam>
+                        </div>
+                        <div class="d-row">
+                            <span class="d-title">Location</span>
+                            <spam class="d-value">{{data.vehicle_location}}</spam>
+                        </div>
+                        <div class="d-row">
+                            <span class="d-title">Uploaded By</span>
+                            <spam class="d-value">{{data.uploaded_by}}</spam>
+                        </div>
+
+                    </div>
+
+                    <div class="spacer-single"></div>
+
+                    <!-- <h4>Features</h4>
+                            <ul class="ul-style-2">
+                                <li>Bluetooth</li>
+                                <li>Multimedia Player</li>
+                                <li>Central Lock</li>
+                                <li>Sunroof</li>
+                            </ul> -->
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="de-price text-center">
+                        Daily rate
+                        <h3>Rs. {{data.price_per_day}}</h3>
+                    </div>
+                    <div class="spacer-30"></div>
+                    <div class="de-box mb25">
+                        <form name="contactForm" id='contact_form' method="POST">
+                            {% csrf_token %}
+                            <h4>Booking this Vehicle</h4>
+
+                            <div class="spacer-20"></div>
+
+                            <div class="row">
+                                <div class="col-lg-12 mb20">
+                                    <h5>Full Name</h5>
+                                    <input type="text" name="Name" id="name" class="form-control"
+                                        placeholder="Your Name" required>
+
+                                </div>
+
+                                <div class="col-lg-12 mb20">
+                                    <h5>Email</h5>
+                                    <input type="email" name="Email" id="email" class="form-control"
+                                        placeholder="Your Email" required>
+                                </div>
+                                <div class="col-lg-12 mb20">
+                                    <h5>Phone</h5>
+                                    <input type="text" name="phone" id="phone" class="form-control"
+                                        placeholder="Your Phone" required>
+                                </div>
+                                <div class="col-lg-12 mb20">
+                                    <h5>Pick Up Date & Time</h5>
+                                    <div class="date-time-field">
+                                        <input type="text" id="date-picker-2" name="Collection Date" value="">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 mb20">
+                                    <h5>Return Date & Time</h5>
+                                    <div class="date-time-field">
+                                        <input type="text" id="date-picker" name="Pick Up Date" value="">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type='submit' id='send_message' value='Book Now' class="btn-main btn-fullwidth">
+
+                            <div class="clearfix"></div>
+
+                        </form>
+                    </div>
+
+                    <div class="de-box">
+                        <h4>Share</h4>
+                        <div class="de-color-icons">
+                            <span><i class="fa fa-twitter fa-lg"></i></span>
+                            <span><i class="fa fa-facebook fa-lg"></i></span>
+                            <span><i class="fa fa-reddit fa-lg"></i></span>
+                            <span><i class="fa fa-linkedin fa-lg"></i></span>
+                            <span><i class="fa fa-pinterest fa-lg"></i></span>
+                            <span><i class="fa fa-stumbleupon fa-lg"></i></span>
+                            <span><i class="fa fa-delicious fa-lg"></i></span>
+                            <span><i class="fa fa-envelope fa-lg"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+<!-- content close -->
+
+<a href="#" id="back-to-top"></a>
+{% endblock content %}
