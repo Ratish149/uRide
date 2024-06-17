@@ -20,6 +20,9 @@ urlpatterns = [
     path('your-vehicle/',views.your_vehicle,name='your_vehicle'),
     path('update_vehicle/<int:id>',views.update_vehicle,name='update_vehicle'),
     path('delete_vehicle/<int:id>',views.delete_vehicle,name='delete_vehicle'),
+    path('on-rent/',views.on_rent,name='on_rent'),
+    path('off_rent/<int:id>',views.off_rent,name='off_rent'),
+
 
     # Khalti Integrations
     path('initiate/',views.initkhalti,name="initiate"),

@@ -12,7 +12,7 @@ from uuid import uuid4
 from django.core.mail import send_mail
 
 from .decorators import admin_only, customer_only, owner_only
-from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm,VehicleForm,ReviewForm
+from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm,VehicleForm,ReviewForm,BookingForm
 from .models import *
 
 
@@ -127,16 +127,19 @@ def customer_profile(request):
 @customer_only
 def booking(request,pk):
     vehicle=Vehicle.objects.get(id=pk)
+    bookingform = BookingForm()
     context={
-        'vehicle':vehicle
+        'vehicle':vehicle,
+        'booking':bookingform
     }
     return render(request, 'pages/customer/booking.html',context)
 
 @customer_only
 def account_booking(request):
     vehicle=Vehicle.objects.filter(rented_by=request.user,isDeleted=False)
+    booking = Booking.objects.filter(user=request.user,status="Ongoing")
     context={
-        'vehicle':vehicle,
+        'vehicle':booking,
         'profile': request.user.profile
     }
     return render(request, 'pages/customer/account-booking.html',context)
@@ -220,6 +223,25 @@ def delete_vehicle(request,id):
     vehicle.save()
     return redirect('your_vehicle')
 
+@owner_only
+def on_rent(request):
+    vehicle=Vehicle.objects.filter(uploaded_by=request.user,available=False,isDeleted=False)
+
+    context = {
+        'vehicle': vehicle,
+        'profile': request.user.profile,
+    }
+    return render(request, 'pages/owner/on_rent.html', context)
+
+@owner_only
+def off_rent(request,id):
+    if request.method=='POST':
+        vehicle=Vehicle.objects.get(id=id,available=False)
+        vehicle.available=True
+        vehicle.save()
+    return redirect('on_rent')
+
+
 # OWNER PAGES END
 
 # AUTHENTICATION PAGES
@@ -290,8 +312,11 @@ def initkhalti(request):
         message=request.POST.get('message')
         vehicle_id=request.POST.get('vehicle_id')
         owned_by=request.POST.get('owned_by')
+        pickup_date=request.POST.get('pickup_date')
+        return_date=request.POST.get('return_date')
         purchase_order_id=request.POST.get('vehicle_id')
         purchase_order_name=request.POST.get('vehicle_name')
+
         transaction_id=str(uuid4())
 
         print(name,email,phone,amount,message,vehicle_id,owned_by,purchase_order_id,purchase_order_name)
@@ -321,6 +346,15 @@ def initkhalti(request):
         print(new_res)
     
         if response.status_code == 200 and 'payment_url' in new_res:
+            vehicle=Vehicle.objects.get(id=purchase_order_id)
+            Booking.objects.create(
+                vehicle=vehicle,
+                user=request.user,
+                pickup_date=pickup_date,
+                return_date=return_date,
+                amount=amount,
+                status='Ongoing'
+            )
             return redirect(new_res['payment_url'])
         else:
             return JsonResponse({'error': 'Failed to initiate payment', 'details': new_res}, status=400)
@@ -357,6 +391,9 @@ def verifyKhalti(request):
             vehicle.available=False
             vehicle.rented_by=request.user
             vehicle.save()
+
+            booking = Booking.objects.get(user=request.user)
+            booking.status="Completed"
 
             BookingTransaction.objects.create(
                 vehicle=vehicle,

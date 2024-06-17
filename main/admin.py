@@ -11,5 +11,7 @@ admin.site.register(GearType)
 admin.site.register(Profile)
 admin.site.register(BookingTransaction)
 admin.site.register(Review)
+admin.site.register(Booking)
+
 
 

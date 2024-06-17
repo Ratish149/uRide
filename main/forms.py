@@ -1,9 +1,8 @@
 from django import forms
 
 from django.contrib.auth.forms import UserCreationForm
-from .models import User,Vehicle,Review
+from .models import User,Vehicle,Review,Profile,Booking
 
-from .models import Profile
 
 USER_TYPE_CHOICES = [
     (0, 'Customer'),
@@ -96,5 +95,15 @@ class ReviewForm(forms.ModelForm):
 
             'rating': forms.Select(choices=[(i, i) for i in range(1, 6)], attrs={'class': 'form-control'}),
             'comment': forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}),
+        }
+
+
+class BookingForm(forms.ModelForm):
+    class Meta:
+        model=Booking
+        fields = ['pickup_date', 'return_date']
+        widgets = {
+            'pickup_date': forms.DateInput(attrs={'class': 'form-control ', 'type': 'date'}),
+            'return_date': forms.DateInput(attrs={'class': 'form-control ', 'type': 'date'}),
         }
 

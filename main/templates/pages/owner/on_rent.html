@@ -1,0 +1,74 @@
+{% extends "pages/owner/owner_base.html" %}
+
+{% block owner_content %}
+                <div class="col-lg-9">
+                    <div class="card padding40  rounded-5">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                
+                                    <div class="de_tab tab_simple">
+
+                                        <ul class="de_nav">
+                                            
+                                            <li class="active"><span>Your Vehicle on Rent</span></li>
+                                            <!-- <li><span>Notifications</span></li> -->
+                                        </ul>
+
+                                        <div class="de_tab_content">
+
+                                            <div class="row">
+                                                {% if vehicle %}
+                                                {% for i in vehicle %}
+                                                <div class="col-lg-12">
+                                                    <div class="de-item-list mb30">
+                                                        <div class="d-img">
+                                                            <img src="{{i.vehicle_front_image.url}}" class="img-fluid"
+                                                                alt="">
+                                                        </div>
+                                                        <div class="d-info">
+                                                            <div class="d-text">
+                                                                <h4>{{i.vehicle_name}}</h4>
+                                                                <div class="d-atr-group">
+                                                                    <ul class="d-atr">
+                                                                        <li><span>Number:</span>{{i.vehicle_number}}
+                                                                        </li>
+                                                                        <li><span>Color:</span>{{i.vehicle_color}}</li>
+
+                                                                        <li><span>Type:</span>{{i.vehicle_type}}</li>
+                                                                        <li><span>Model:</span>{{i.vehicle_model}}</li>
+                                                                        <li><span>Gear:</span>{{i.vehicle_model}}</li>
+
+                                                                        <li><span>Seats:</span>{{i.vehicle_seat}}</li>
+
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-price">
+                                                            Daily rate from <span>Rs. {{i.price_per_day}}</span>
+                                                            <form action="{% url 'off_rent' i.id %}" method="POST">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="btn-main">Mark As Returned</button>
+                                                           
+                                                            </form>
+
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+
+                                                {% endif %}
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+{% endblock owner_content %}

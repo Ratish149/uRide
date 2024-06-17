@@ -1,11 +1,8 @@
-{% extends "base.html" %}
-
-{% load static %}
-
-{% block title %}
-uRide - Profile
-{% endblock title %}
-
+{% extends "base.html" %} 
+{% load static %} 
+{% block title %} 
+uRide - Profile 
+{% endblock title %} 
 {% block content %}
 
 <!-- content begin -->
@@ -14,7 +11,7 @@ uRide - Profile
 
     <!-- section begin -->
     <section id="subheader" class="jarallax text-light">
-        <img src="{% static 'images/background/14.jpg' %} " class="jarallax-img" alt="">
+        <img src="{% static 'images/background/14.jpg' %} " class="jarallax-img" alt="" />
         <div class="center-y relative text-center">
             <div class="container">
                 <div class="row">
@@ -36,11 +33,11 @@ uRide - Profile
                         <div class="profile_avatar">
                             {% if profile.profile_picture %}
                             <div class="profile_img">
-                                <img src="{{profile.profile_picture.url}}" alt="">
+                                <img src="{{profile.profile_picture.url}}" alt="" />
                             </div>
                             {% else %}
                             <div class="profile_img">
-                                <img src="{% static 'images/profile/1.jpg' %}" alt="">
+                                <img src="{% static 'images/profile/1.jpg' %}" alt="" />
                             </div>
                             {% endif %}
                             <div class="profile_name">
@@ -52,26 +49,36 @@ uRide - Profile
                         </div>
                         <div class="spacer-20"></div>
                         <ul class="menu-col">
+                            <li>
+                                <a href="{% url 'owner_profile' %}"
+                                    class="{% if request.path == '/owner-profile/' %} active {% endif %}"><i
+                                        class="fa fa-user"></i>My Profile</a>
+                            </li>
 
-                            <li><a href="{% url 'owner_profile' %}" class=" {% if request.path == '/owner-profile/' %}
-                                active
-                            {% endif %} "><i class="fa fa-user"></i>My
-                                    Profile</a></li>
-                            <li><a href="{% url 'register_vehicle' %}" class=" {% if request.path == '/register-vehicle/' %}
-                                active
-                            {% endif %}"><i class="fa fa-calendar"></i>Add Vehicle</a></li>
-                            <li><a href="{% url 'your_vehicle' %}" class=" {% if request.path == '/your-vehicle/' %}
-                                active
-                            {% endif %} "><i class="fa fa-calendar"></i>Your Vehicle</a></li>
-                            <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>Sign Out</a></li>
+                            <li>
+                                <a href="{% url 'register_vehicle' %}"
+                                    class="{% if request.path == '/register-vehicle/' %} active {% endif %}"><i
+                                        class="fa fa-calendar"></i>Add Vehicle</a>
+                            </li>
 
+                            <li>
+                                <a href="{% url 'your_vehicle' %}"
+                                    class="{% if request.path == '/your-vehicle/' %} active {% endif %}"><i
+                                        class="fa fa-calendar"></i>Your Vehicle</a>
+                            </li>
+
+                            <li>
+                                <a href="{% url 'on_rent' %}"
+                                    class="{% if request.path == '/on-rent/' %} active {% endif %}"><i
+                                        class="fa fa-calendar"></i>On Rent</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>Sign Out</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
-                {% block owner_content %}
-
-                {% endblock owner_content %}
-
+                {% block owner_content %} {% endblock owner_content %}
             </div>
         </div>
     </section>

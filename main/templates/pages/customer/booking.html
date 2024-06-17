@@ -48,20 +48,8 @@ uRide - Booking
 
                 <div class="row g-4">
 
-                  <div class="col-lg-6">
-                    <h5>Pick Up Date</h5>
-                    <div class="date-time-field">
-                      <input type="date" id="pick-up-date" name="Pick Up Date" value="">
-                    </div>
-                  </div>
-                
-                  <div class="col-lg-6">
-                    <h5>Return Date</h5>
-                    <div class="date-time-field">
-                      <input type="date" id="return-date" name="Return Date" value="">
-                    </div>
-                  </div>
-
+                  {{booking.as_p}}
+           
                   <div class="col-lg-6">
                     <h5>Total Price: </h5>
                     <input class="form-control" type="text" id="rent_price" placeholder="RS {{ vehicle.price_per_day }}" name="amount" disabled>
@@ -166,8 +154,8 @@ uRide - Booking
 <script>
   // JavaScript to calculate the total price
   document.addEventListener('DOMContentLoaded', function () {
-            const pickUpDateInput = document.getElementById('pick-up-date');
-            const returnDateInput = document.getElementById('return-date');
+            const pickUpDateInput = document.getElementById('id_pickup_date');
+            const returnDateInput = document.getElementById('id_return_date');
             const rentPriceInput = document.getElementById('rent_price');
             const pricePerDayInput = document.getElementById('price_per_day');
             const totalPriceInput = document.getElementById('total_price');
@@ -179,7 +167,7 @@ uRide - Booking
 
                 if (pickUpDate && returnDate && returnDate >= pickUpDate) {
                     const timeDifference = returnDate - pickUpDate;
-                    const daysDifference = timeDifference / (1000 * 3600 * 24) + 1; // add 1 to include both pick-up and return days
+                    const daysDifference = timeDifference / (1000 * 3600 * 24); // add 1 to include both pick-up and return days
                     const totalPrice = daysDifference * pricePerDay;
                     rentPriceInput.value = `RS ${totalPrice.toFixed(2)}`;
                     totalPriceInput.value = totalPrice.toFixed(2); // update hidden total price input
