@@ -80,7 +80,6 @@ class ProfileUpdateForm(forms.ModelForm):
             'profile_picture': forms.FileInput(attrs={'class': 'form-control custom-profile-picture-class'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control custom-phone-number-class'}),
             'licence_picture': forms.FileInput(attrs={'class': 'form-control custom-profile-picture-class'}),
-
             
         }
 
@@ -94,6 +93,8 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ['rating', 'comment']
         widgets = {
+
             'rating': forms.Select(choices=[(i, i) for i in range(1, 6)], attrs={'class': 'form-control'}),
             'comment': forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}),
         }
+

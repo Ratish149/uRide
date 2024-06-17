@@ -42,17 +42,17 @@ def cars(request):
     gear_types = GearType.objects.all()  
     
     if selected_vehicle_types:
-        vehicles = Vehicle.objects.filter(vehicle_type__id__in=selected_vehicle_types,available=True)
+        vehicles = Vehicle.objects.filter(vehicle_type__id__in=selected_vehicle_types,available=True,isDeleted=False)
     if selected_vehicle_models:
-        vehicles = Vehicle.objects.filter(vehicle_model__id__in=selected_vehicle_models,available=True)
+        vehicles = Vehicle.objects.filter(vehicle_model__id__in=selected_vehicle_models,available=True,isDeleted=False)
     if selected_gear_types:
-        vehicles = Vehicle.objects.filter(vehicle_gear__id__in=selected_gear_types,available=True)
+        vehicles = Vehicle.objects.filter(vehicle_gear__id__in=selected_gear_types,available=True,isDeleted=False)
     if selected_car_seats:
         seat_filters = [int(seat.split('_')[-1]) for seat in selected_car_seats if seat != 'car_seat_6_plus']
         if 'car_seat_6_plus' in selected_car_seats:
-            vehicles = vehicles.filter(vehicle_seat__gt=6,available=True)
+            vehicles = vehicles.filter(vehicle_seat__gt=6,available=True,isDeleted=False)
         else:
-            vehicles = vehicles.filter(vehicle_seat__in=seat_filters,available=True)
+            vehicles = vehicles.filter(vehicle_seat__in=seat_filters,available=True,isDeleted=False)
 
     context = {
         'vehicle_types': vehicle_types,
@@ -257,35 +257,22 @@ def register(request):
         form=SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # messages.success(request,'You Have Successfully Registered!!')
-            return redirect('reg_profile_detail')
+            messages.success(request,'You Have Successfully Registered!!')
+            return redirect('login')
         else:
             messages.error(request,'Invalid Form')
     else:
         form=SignUpForm()
     return render(request,'auth/register.html',{'form':form})
 
-def reg_profile_detail(request):
-    form=ProfileUpdateForm
-    if request.method=='POST':
-        form=ProfileUpdateForm(request.POST,request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request,'You Have Successfully Registered!!')
-            return redirect('login')
-        else:
-            messages.error(request,'Invalid Form')
-    else:
-        form=ProfileUpdateForm()
-    return render(request, 'auth/reg_profile_detail.html',{'form':form})
 
 # Logout user
 def log_out(request):
     logout(request)
     return redirect('login')
 
-# AUTHENTICATION PAGES END
 
+# AUTHENTICATION PAGES END
 
 # KHALTI PAYMENT INTEGRATION
 # Initiate khalti payment

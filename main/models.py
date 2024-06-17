@@ -78,7 +78,7 @@ class Profile(models.Model):
 
     def _str_(self):
         return self.user.username
-    
+
 class BookingTransaction(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     user=models.ForeignKey(User, on_delete=models.CASCADE)
