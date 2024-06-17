@@ -134,10 +134,15 @@ def booking(request,pk):
 
 @customer_only
 def account_booking(request):
-    return render(request, 'pages/customer/account-booking.html')
+    vehicle=Vehicle.objects.filter(rented_by=request.user,isDeleted=False)
+    context={
+        'vehicle':vehicle,
+        'profile': request.user.profile
+    }
+    return render(request, 'pages/customer/account-booking.html',context)
+
 
 # CUSTOMER PAGES END
-
 
 # OWNER PAGES
 # Display owner profile and Update profile
@@ -186,6 +191,7 @@ def register_vehicle(request):
 @owner_only
 def your_vehicle(request):
     vehicle=Vehicle.objects.filter(uploaded_by=request.user,isDeleted=False)
+    data=Vehicle.objects.filter(uploaded_by=request.user,)
     context={
          'vehicle':vehicle,
          'profile': request.user.profile
@@ -372,7 +378,7 @@ def verifyKhalti(request):
                 user=vehicle.rented_by
             )
             subject="Vehicle Rented"
-            message=f"Your vehicle {vehicle.vehicle_name} has been successfully rented by{request.user.username} . Thank you for using our service."
+            message=f"Your vehicle {vehicle.vehicle_name} has been successfully rented by {request.user.username} . Thank you for using our service."
             from_email='bdevil149@gmail.com'
             recipient_list=[vehicle.uploaded_by.email,'ratish.shakya149@gmail.com']
             send_mail(subject, message, from_email, recipient_list, fail_silently=False)

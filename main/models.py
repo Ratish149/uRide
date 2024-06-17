@@ -64,8 +64,8 @@ class Vehicle(models.Model):
     
     def save(self,*args, **kwargs):
         self.vehicle_name=self.vehicle_name.capitalize()
-        self.vehicle_color=self.vehicle_name.capitalize()
-        self.vehicle_location=self.vehicle_name.capitalize()
+        self.vehicle_color=self.vehicle_color.capitalize()
+        self.vehicle_location=self.vehicle_location.capitalize()
 
         super().save(*args, **kwargs)
 
