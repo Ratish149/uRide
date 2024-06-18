@@ -19,7 +19,7 @@ uRide - Cars
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <h1>Vehicle Fleet</h1>
+                        <h1>{{data.vehicle_name}}</h1>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -206,7 +206,10 @@ uRide - Cars
 
                         </form>
                     </div> -->
+                    <a class="btn-main btn-fullwidth" href="{% url 'booking' data.id %}">Rent Now</a>
+                    <!-- <button type='submit' id='send_message' value='Book Now' class="btn-main btn-fullwidth">Book Now</button> -->
 
+<br><br>
                     <div class="de-box">
                         <h4>Share</h4>
                         <div class="de-color-icons">

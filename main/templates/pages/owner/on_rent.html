@@ -1,5 +1,9 @@
 {% extends "pages/owner/owner_base.html" %}
 
+{% block web_title %}
+uRide - On Rent
+{% endblock web_title %}
+
 {% block owner_content %}
                 <div class="col-lg-9">
                     <div class="card padding40  rounded-5">
@@ -11,11 +15,8 @@
                                         <ul class="de_nav">
                                             
                                             <li class="active"><span>Your Vehicle on Rent</span></li>
-                                            <!-- <li><span>Notifications</span></li> -->
                                         </ul>
-
                                         <div class="de_tab_content">
-
                                             <div class="row">
                                                 {% if vehicle %}
                                                 {% for i in vehicle %}

@@ -1,10 +1,10 @@
-{% extends "pages/owner/owner_base.html" %}
+{% extends "pages/admin/admin_base.html" %}
+{% block profile_title %}
+My Profile
+{% endblock profile_title %}
 
-{% block web_title %}
-uRide - Profile
-{% endblock web_title %}
+{% block profile_content %}
 
-{% block owner_content %}
 <div class="col-lg-9">
     <div class="card padding40  rounded-5">
         <div class="row">
@@ -15,6 +15,7 @@ uRide - Profile
 
                         <ul class="de_nav">
                             <li class="active"><span>Profile</span></li>
+                            <!-- <li><span>Notifications</span></li> -->
                         </ul>
 
                         <div class="de_tab_content">
@@ -22,17 +23,27 @@ uRide - Profile
                             <div class="row">
                                 {{ profile_form.as_p }}
                                 {{ user_form.as_p }}
+
+                                <div class="profile_img">
+                                    <p>Licence Image</p>
+                                    <img src="{{profile.licence_picture.url}}" alt="">
+                                </div>
+                                <br>
                             </div>
 
                         </div>
                     </div>
-
+<br>
                     <input type="submit" id="submit" class="btn-main" value="Update profile">
                 </form>
             </div>
         </div>
     </div>
 </div>
-{% endblock owner_content %}
-                
-           
+
+
+
+</div>
+<!-- content close -->
+
+{% endblock profile_content %}

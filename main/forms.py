@@ -7,13 +7,13 @@ from .models import User,Vehicle,Review,Profile,Booking
 USER_TYPE_CHOICES = [
     (0, 'Customer'),
     (1, 'Owner'),
-    (2, 'Admin'),
 ]
 
 class SignUpForm(UserCreationForm):
     email=forms.EmailField(label='Email',widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Your Email Address'}))
     first_name=forms.CharField(label='First Name',max_length='100',widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Your First name'}))
     last_name=forms.CharField(label='Last Name',max_length='100',widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Your Last name'}))
+    # license_image = forms.FileField(label='License Image',widget=forms.FileInput(attrs={'class':'form-control'}))
     user_type = forms.TypedChoiceField(
         label="Register As",
         choices=USER_TYPE_CHOICES,

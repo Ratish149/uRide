@@ -23,6 +23,13 @@ urlpatterns = [
     path('on-rent/',views.on_rent,name='on_rent'),
     path('off_rent/<int:id>',views.off_rent,name='off_rent'),
 
+    # Admin Profile
+    path('admin-profile/',views.admin_profile,name='admin_profile'),
+    path('vehicle-approve/',views.approve_vehicle,name='vehicle_approve'),
+    path('vehicle-approve-detail/<int:id>',views.approve_vehicle_detail,name='vehicle_approve_detail'),
+    path('user-approve/',views.approve_user,name='user_approve'),
+
+
 
     # Khalti Integrations
     path('initiate/',views.initkhalti,name="initiate"),

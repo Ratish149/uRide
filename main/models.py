@@ -38,6 +38,7 @@ class User(AbstractUser):
     is_admin = models.BooleanField(default=False)
     is_customer = models.BooleanField(default=True)
     is_owner = models.BooleanField(default=False)
+    approved = models.BooleanField(default=False)
 
 class Vehicle(models.Model):
     vehicle_name = models.CharField(max_length=20)
@@ -58,6 +59,7 @@ class Vehicle(models.Model):
     price_per_day = models.IntegerField()
     isDeleted=models.BooleanField(default=False)
     available = models.BooleanField(default=True)
+    approved = models.BooleanField(default=False)
 
     def _str_(self):
         return f'{self.vehicle_name} - {self.vehicle_model}'

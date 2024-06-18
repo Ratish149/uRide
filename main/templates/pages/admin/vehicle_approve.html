@@ -1,0 +1,100 @@
+{% extends "pages/admin/admin_base.html" %}
+
+{% block web_title %}
+Approve
+{% endblock web_title %}
+
+{% block profile_title %}
+User
+{% endblock profile_title %}
+{% block profile_content %}
+
+
+<div class="col-lg-9">
+
+  <div class="card padding30 rounded-5 mb25">
+    <h4>Unapproved Vehicle</h4>
+
+    <table class="table de-table">
+      <thead>
+        <tr>
+          <th scope="col"><span class="fs-12 text-gray">Vehicle ID</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Vehicle Image</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Vehicle Name</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Owner</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Model</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Price Per Day</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Location</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Status</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in vehicles %}
+
+
+        <tr>
+          <td><span class="d-lg-none d-sm-block">Vehicle ID</span>
+            <div class="badge bg-gray-100 text-dark"><a
+                href="{% url 'vehicle_approve_detail' item.id %}">{{item.id}}</a></div>
+          </td>
+          <td><span class="d-lg-none d-sm-block">Car Name</span><img src="{{item.vehicle_front_image.url}}"
+              width="120px" class="img-fluid" alt=""></td>
+
+          <td><span class="d-lg-none d-sm-block">Car Name</span><a
+              href="{% url 'vehicle_approve_detail' item.id %}"><span class="bold">{{item.vehicle_name}}</span></a></td>
+          <td><span class="d-lg-none d-sm-block">Owner</span>{{item.uploaded_by}}</td>
+          <td><span class="d-lg-none d-sm-block">Model</span>{{item.vehicle_model}}</td>
+          <td><span class="d-lg-none d-sm-block">Price Per Day</span>Rs. {{item.price_per_day}}</td>
+          <td><span class="d-lg-none d-sm-block">Location</span>{{item.vehicle_location}}</td>
+          <td>
+            <div class="badge rounded-pill bg-warning">Pending</div>
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card padding30 rounded-5 mb25">
+    <h4>Approved Vehicle</h4>
+
+    <table class="table de-table">
+      <thead>
+        <tr>
+          <th scope="col"><span class="fs-12 text-gray">Vehicle ID</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Car Name</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Owner</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Model</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Price Per Day</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Location</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Status</span></th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for approve in approved_vehicles %}
+
+        <tr>
+          <td><span class="d-lg-none d-sm-block">Vehicle ID</span>
+            <div class="badge bg-gray-100 text-dark">{{approve.id}}</div>
+          </td>
+          <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">{{approve.vehicle_name}}</span></td>
+          <td><span class="d-lg-none d-sm-block">Pick Up Location</span>{{approve.uploaded_by}}</td>
+          <td><span class="d-lg-none d-sm-block">Drop Off Location</span>{{approve.vehicle_model}}</td>
+          <td><span class="d-lg-none d-sm-block">Pick Up Date</span>Rs. {{approve.price_per_day}}</td>
+          <td><span class="d-lg-none d-sm-block">Return Date</span>{{approve.vehicle_location}}</td>
+          <td>
+            <div class="badge rounded-pill bg-success  ">Approved</div>
+          </td>
+        </tr>
+        {% endfor %}
+
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- content close -->
+{% endblock profile_content %}

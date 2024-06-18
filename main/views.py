@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -27,10 +27,10 @@ def home(request):
 
 # Display all cars including search function and filter function
 def cars(request):
-    vehicles = Vehicle.objects.filter(available=True,isDeleted=False)
+    vehicles = Vehicle.objects.filter(available=True,isDeleted=False,approved=True)
     searched_text=request.GET.get('searched_text')
     if searched_text:
-        vehicles = Vehicle.objects.filter(vehicle_name__icontains=searched_text,available=True)
+        vehicles = Vehicle.objects.filter(vehicle_name__icontains=searched_text,available=True,approved=True)
 
     selected_vehicle_types = request.GET.getlist('vehicle_type')
     selected_vehicle_models = request.GET.getlist('vehicle_model')
@@ -42,17 +42,17 @@ def cars(request):
     gear_types = GearType.objects.all()  
     
     if selected_vehicle_types:
-        vehicles = Vehicle.objects.filter(vehicle_type__id__in=selected_vehicle_types,available=True,isDeleted=False)
+        vehicles = Vehicle.objects.filter(vehicle_type__id__in=selected_vehicle_types,available=True,isDeleted=False,approved=True)
     if selected_vehicle_models:
-        vehicles = Vehicle.objects.filter(vehicle_model__id__in=selected_vehicle_models,available=True,isDeleted=False)
+        vehicles = Vehicle.objects.filter(vehicle_model__id__in=selected_vehicle_models,available=True,isDeleted=False,approved=True)
     if selected_gear_types:
-        vehicles = Vehicle.objects.filter(vehicle_gear__id__in=selected_gear_types,available=True,isDeleted=False)
+        vehicles = Vehicle.objects.filter(vehicle_gear__id__in=selected_gear_types,available=True,isDeleted=False,approved=True)
     if selected_car_seats:
         seat_filters = [int(seat.split('_')[-1]) for seat in selected_car_seats if seat != 'car_seat_6_plus']
         if 'car_seat_6_plus' in selected_car_seats:
-            vehicles = vehicles.filter(vehicle_seat__gt=6,available=True,isDeleted=False)
+            vehicles = vehicles.filter(vehicle_seat__gt=6,available=True,isDeleted=False,approved=True)
         else:
-            vehicles = vehicles.filter(vehicle_seat__in=seat_filters,available=True,isDeleted=False)
+            vehicles = vehicles.filter(vehicle_seat__in=seat_filters,available=True,isDeleted=False,approved=True)
 
     context = {
         'vehicle_types': vehicle_types,
@@ -136,7 +136,7 @@ def booking(request,pk):
 
 @customer_only
 def account_booking(request):
-    vehicle=Vehicle.objects.filter(rented_by=request.user,isDeleted=False)
+    vehicle=Vehicle.objects.filter(rented_by=request.user,isDeleted=False,approved=True)
     booking = Booking.objects.filter(user=request.user,status="Ongoing")
     context={
         'vehicle':booking,
@@ -193,10 +193,11 @@ def register_vehicle(request):
 # Display Registered vehicle
 @owner_only
 def your_vehicle(request):
-    vehicle=Vehicle.objects.filter(uploaded_by=request.user,isDeleted=False)
-    data=Vehicle.objects.filter(uploaded_by=request.user,)
+    vehicle=Vehicle.objects.filter(uploaded_by=request.user,isDeleted=False,approved=True)
+    data=Vehicle.objects.filter(uploaded_by=request.user,approved=False)
     context={
          'vehicle':vehicle,
+         'data':data,
          'profile': request.user.profile
     }
     return render(request, 'pages/owner/your_vehicle.html',context)
@@ -244,6 +245,72 @@ def off_rent(request,id):
 
 # OWNER PAGES END
 
+
+# ADMIN PAGE
+
+@admin_only
+def admin_profile(request):
+    user_form = UserUpdateForm(instance=request.user)
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    profile_form = ProfileUpdateForm(instance=profile)
+
+    if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('admin_profile')  # Redirect to a page displaying the updated profile
+
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'user': request.user,
+        'profile': request.user.profile,
+    }
+    return render(request, 'pages/admin/admin_profile.html',context)
+
+@admin_only
+def approve_vehicle(request):
+    vehicles=Vehicle.objects.filter(approved=False,isDeleted=False)
+    approved_vehicles=Vehicle.objects.filter(approved=True,isDeleted=False)
+
+    context={
+        'vehicles':vehicles,
+        'approved_vehicles':approved_vehicles,
+        'profile': request.user.profile,
+
+    }
+    return render(request, 'pages/admin/vehicle_approve.html',context)
+
+@admin_only
+def approve_vehicle_detail(request,id):
+    vehicle=Vehicle.objects.get(id=id)
+
+    if request.method == 'POST':
+        vehicle=get_object_or_404(Vehicle,id=id)
+        vehicle.approved=True
+        vehicle.save()
+        return redirect('vehicle_approve')
+    context={
+        'vehicle':vehicle,
+        
+    }
+    return render(request, 'pages/admin/approve_vehicle_detail.html',context)
+
+def approve_user(request):
+    user=User.objects.filter(approved=False)
+
+    context={
+        'user':user,
+        'profile': request.user.profile,
+
+    }
+    return render(request, 'pages/admin/user_approve.html',context)
+
+# ADMIN PAGE END
+
+
 # AUTHENTICATION PAGES
 # Login user based on its role
 def log_in(request):
@@ -259,7 +326,7 @@ def log_in(request):
 
         elif user is not None and user.is_admin:
                 login(request, user)
-                return redirect('admin_home')
+                return redirect('admin_profile')
         elif user is not None and user.is_customer:
                 login(request, user)
                 return redirect('customer_profile')

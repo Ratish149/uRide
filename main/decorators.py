@@ -13,7 +13,7 @@ def owner_only(view_func):
         if request.user.is_authenticated and request.user.is_owner:
             return view_func(request, *args, **kwargs)
         else:
-            return redirect('auth_denied')
+            return redirect('login')
     return wrapper_func
 
 def customer_only(view_func):
@@ -21,5 +21,5 @@ def customer_only(view_func):
         if request.user.is_authenticated and request.user.is_customer:
             return view_func(request, *args, **kwargs)
         else:
-            return redirect('auth_denied')
+            return redirect('login')
     return wrapper_func
