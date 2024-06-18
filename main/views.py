@@ -10,7 +10,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from uuid import uuid4
 from django.core.mail import send_mail
-
+from django.template.loader import render_to_string
+from datetime import datetime
 from .decorators import admin_only, customer_only, owner_only
 from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm,VehicleForm,ReviewForm,BookingForm
 from .models import *
@@ -92,6 +93,29 @@ def car_detail(request,pk):
     return render(request, 'car-single.html',context)
 
 def contact(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        message = request.POST.get('message')
+        date=datetime.now()
+
+        context={
+            'name':name,
+            'email':email,
+            'phone':phone,
+            'message':message,
+            'date':date
+        }
+        subject="Thank you for contacting us"
+        message=render_to_string('message.html',context)
+        from_email='bdevil149@gmail.com'
+        recipient_list=[email,'ratish.shakya149@gmail.com']
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+
+        messages.success(request, 'Thank you for contacting us. We will get back to you shortly.')
+    
+        return redirect('contact')
     return render(request, 'contact.html')
 
 def about(request):
@@ -194,7 +218,7 @@ def register_vehicle(request):
 @owner_only
 def your_vehicle(request):
     vehicle=Vehicle.objects.filter(uploaded_by=request.user,isDeleted=False,approved=True)
-    data=Vehicle.objects.filter(uploaded_by=request.user,approved=False)
+    data=Vehicle.objects.filter(uploaded_by=request.user,approved=False,isDeleted=False)
     context={
          'vehicle':vehicle,
          'data':data,
@@ -238,7 +262,9 @@ def on_rent(request):
 def off_rent(request,id):
     if request.method=='POST':
         vehicle=Vehicle.objects.get(id=id,available=False)
+        # booking=Booking.objects.get(uploaded_by=request.user)
         vehicle.available=True
+        booking.status="Completed"
         vehicle.save()
     return redirect('on_rent')
 
@@ -468,10 +494,17 @@ def verifyKhalti(request):
                 amount=new_res['total_amount'],
                 user=vehicle.rented_by
             )
-            subject="Vehicle Rented"
-            message=f"Your vehicle {vehicle.vehicle_name} has been successfully rented by {request.user.username} . Thank you for using our service."
+            date=datetime.now()
+            # subject="Vehicle Rented"
+            # message=f"Your vehicle {vehicle.vehicle_name} has been successfully rented by {request.user.username} . Thank you for using our service."
+            # from_email='bdevil149@gmail.com'
+            # recipient_list=[vehicle.uploaded_by.email,'ratish.shakya149@gmail.com']
+            # send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+
+            subject="Vehicle Rental Confirmation"
+            message=render_to_string('rent_confirmation.html',{'vehicle':vehicle,'date':date,'amount':new_res['total_amount'],'user':request.user})
             from_email='bdevil149@gmail.com'
-            recipient_list=[vehicle.uploaded_by.email,'ratish.shakya149@gmail.com']
+            recipient_list=[request.user.email,vehicle.uploaded_by.email,'ratish.shakya149@gmail.com']
             send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 
             return redirect('cars')

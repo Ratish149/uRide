@@ -88,7 +88,6 @@ class Booking(models.Model):
     return_date = models.DateField(auto_now=False, auto_now_add=False)
     amount = models.CharField(max_length=50)
     status = models.CharField(max_length=20, default='Ongoing')
-    # isPaid = models.BooleanField(default=False)
 
 class BookingTransaction(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
