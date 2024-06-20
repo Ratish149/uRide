@@ -76,7 +76,7 @@ class Profile(models.Model):
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
     full_name = models.CharField(max_length=20, blank=True, null=True)
     phone_number = models.CharField(max_length=10, blank=True, null=True)
-    licence_picture = models.ImageField(upload_to='licence_pictures/', blank=True, null=True)
+    licence_picture = models.ImageField(upload_to='licence_pictures/', blank=True, null=True,default=None)
 
     def _str_(self):
         return self.user.username

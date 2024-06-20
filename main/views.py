@@ -161,7 +161,7 @@ def booking(request,pk):
 @customer_only
 def account_booking(request):
     vehicle=Vehicle.objects.filter(rented_by=request.user,isDeleted=False,approved=True)
-    booking = Booking.objects.filter(user=request.user,status="Ongoing")
+    booking = Booking.objects.filter(user=request.user)
     context={
         'vehicle':booking,
         'profile': request.user.profile
@@ -262,9 +262,11 @@ def on_rent(request):
 def off_rent(request,id):
     if request.method=='POST':
         vehicle=Vehicle.objects.get(id=id,available=False)
-        # booking=Booking.objects.get(uploaded_by=request.user)
+        booking = Booking.objects.get(vehicle__id=id)
         vehicle.available=True
+        vehicle.rented_by=None
         booking.status="Completed"
+        booking.save()
         vehicle.save()
     return redirect('on_rent')
 
@@ -324,15 +326,35 @@ def approve_vehicle_detail(request,id):
     }
     return render(request, 'pages/admin/approve_vehicle_detail.html',context)
 
+@admin_only
 def approve_user(request):
-    user=User.objects.filter(approved=False)
 
+    profile=Profile.objects.filter(user__approved=False)
+    approve_user=Profile.objects.filter(user__approved=True)
     context={
-        'user':user,
+        'user':profile,
+        'approve_user':approve_user,
         'profile': request.user.profile,
 
     }
     return render(request, 'pages/admin/user_approve.html',context)
+
+@admin_only
+def approve_user_detail(request,id):
+    user=Profile.objects.get(id=id)
+
+    if request.method == 'POST':
+        user=get_object_or_404(Profile,id=id)
+        user.user.approved=True
+        user.user.save()
+        return redirect('user_approve')
+    context={
+        'user':user,
+        'profile': request.user.profile,
+        
+    }
+    return render(request, 'pages/admin/approve_user_detail.html',context)
+
 
 # ADMIN PAGE END
 

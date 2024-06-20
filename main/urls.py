@@ -27,6 +27,7 @@ urlpatterns = [
     path('admin-profile/',views.admin_profile,name='admin_profile'),
     path('vehicle-approve/',views.approve_vehicle,name='vehicle_approve'),
     path('vehicle-approve-detail/<int:id>',views.approve_vehicle_detail,name='vehicle_approve_detail'),
+    path('user-approve-detail/<int:id>',views.approve_user_detail,name='user_approve_detail'),
     path('user-approve/',views.approve_user,name='user_approve'),
 
 

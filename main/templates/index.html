@@ -57,16 +57,17 @@ uRide - Home
                                     <a href="{% url 'car_detail' car.id %}">
                                     <h4>{{ car.vehicle_name }}</h4>
                                 </a>
-                                    <div class="d-atr-group">
-                                        <span class="d-atr"><img src="{% static 'images/icons/1-green.svg' %}"
-                                                alt="">{{ car.vehicle_seat }}</span>
-                                        <span class="d-atr"><img src="{% static 'images/icons/2-green.svg' %}"
-                                                alt="">{{ car.vehicle_luggage_no }}</span>
-                                        <span class="d-atr"><img src="{% static 'images/icons/3-green.svg' %}"
-                                                alt="">{{ car.vehicle_door }}</span>
-                                        <span class="d-atr"><img src="{% static 'images/icons/4-green.svg' %}"
-                                                alt="">{{ car.vehicle_type }}</span>
-                                    </div>
+                                <div class="d-atr-group">
+                                    <span class="d-atr"><img src="{% static 'images/icons/1-green.svg' %} " alt="" />
+                                      {{ car.vehicle_seat }}</span>
+                                    <span class="d-atr"><img src="{% static 'images/icons/fuel-green.svg' %}" alt="" />
+                                      {{car.vehicle_type }}
+                                      </span>
+                                    <span class="d-atr"><img src="{% static 'images/icons/gear-green.svg' %}" alt="" />
+                                      {{car.vehicle_gear }}</span>
+                                    <span class="d-atr"><img src="{% static 'images/icons/4-green.svg' %}" alt="" />
+                                      {{car.vehicle_model }}</span>
+                                  </div>
                                     <div class="d-price">
                                         Daily rate from <span>Rs. {{ car.price_per_day }}</span>
                                         <a class="btn-main" href="car-single.html">Rent Now</a>

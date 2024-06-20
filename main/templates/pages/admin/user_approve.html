@@ -18,12 +18,12 @@ User
     <table class="table de-table">
       <thead>
         <tr>
-          <th scope="col"><span class="fs-12 text-gray">Vehicle ID</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Car Name</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Owner</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Model</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Price Per Day</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Location</span></th>
+          <th scope="col"><span class="fs-12 text-gray">User ID</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Username</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Email</span></th>
+          <th scope="col"><span class="fs-12 text-gray">First Name</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Last Name</span></th>
+          <th scope="col"><span class="fs-12 text-gray">License Image</span></th>
           <th scope="col"><span class="fs-12 text-gray">Status</span></th>
         </tr>
       </thead>
@@ -35,11 +35,17 @@ User
           <td><span class="d-lg-none d-sm-block">Vehicle ID</span>
             <div class="badge bg-gray-100 text-dark">{{item.id}}</div>
           </td>
-          <td><span class="d-lg-none d-sm-block">Car Name</span><a href="{% url 'vehicle_approve_detail' item.id %}"><span class="bold">{{item.username}}</span></a></td>
-          <td><span class="d-lg-none d-sm-block">Owner</span>{{item.email}}</td>
-          <td><span class="d-lg-none d-sm-block">Model</span>{{item.first_name}}</td>
-          <td><span class="d-lg-none d-sm-block">Price Per Day</span>{{item.last_name}}</td>
-          <td><span class="d-lg-none d-sm-block">Location</span>{{item.vehicle_location}}</td>
+          <td><span class="d-lg-none d-sm-block">Car Name</span><a href="{% url 'user_approve_detail' item.id %}"><span class="bold">{{item.user.username}}</span></a></td>
+          <td><span class="d-lg-none d-sm-block">Owner</span>{{item.user.email}}</td>
+          <td><span class="d-lg-none d-sm-block">Model</span>{{item.user.first_name}}</td>
+          <td><span class="d-lg-none d-sm-block">Price Per Day</span>{{item.user.last_name}}</td>
+          <!-- <td><span class="d-lg-none d-sm-block">Location</span>{{item.license_picture.url}}</td> -->
+
+          <td><span class="d-lg-none d-sm-block">License</span><img src=" {% if item.licence_picture %}
+            {{item.licence_picture.url}}
+          {% endif %}
+            "
+            width="120px" class="img-fluid" alt=""></td>
           <td>
             <div class="badge rounded-pill bg-warning">Pending</div>
           </td>
@@ -56,30 +62,36 @@ User
     <table class="table de-table">
       <thead>
         <tr>
-          <th scope="col"><span class="fs-12 text-gray">Vehicle ID</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Car Name</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Owner</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Model</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Price Per Day</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Location</span></th>
+          <th scope="col"><span class="fs-12 text-gray">User ID</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Username</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Email</span></th>
+          <th scope="col"><span class="fs-12 text-gray">First Name</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Last Name</span></th>
+          <th scope="col"><span class="fs-12 text-gray">License Image</span></th>
           <th scope="col"><span class="fs-12 text-gray">Status</span></th>
         </tr>
       </thead>
       <tbody>
 
-        {% for approve in user %}
+        {% for approve in approve_user %}
           
         <tr>
-          <td><span class="d-lg-none d-sm-block">Vehicle ID</span>
+          <td><span class="d-lg-none d-sm-block">User ID</span>
             <div class="badge bg-gray-100 text-dark">{{approve.id}}</div>
           </td>
-          <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">{{approve.vehicle_name}}</span></td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Location</span>{{approve.uploaded_by}}</td>
-          <td><span class="d-lg-none d-sm-block">Drop Off Location</span>{{approve.vehicle_model}}</td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Date</span>Rs. {{approve.price_per_day}}</td>
-          <td><span class="d-lg-none d-sm-block">Return Date</span>{{approve.vehicle_location}}</td>
+          <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">{{approve.user.username}}</span></td>
+          <td><span class="d-lg-none d-sm-block">Owner</span>{{approve.user.email}}</td>
+          <td><span class="d-lg-none d-sm-block">Model</span>{{approve.user.first_name}}</td>
+          <td><span class="d-lg-none d-sm-block">Price Per Day</span>{{approve.user.last_name}}</td>
+          <!-- <td><span class="d-lg-none d-sm-block">Location</span>{{item.license_picture.url}}</td> -->
+
+          <td><span class="d-lg-none d-sm-block">License</span><img src=" {% if approve.licence_picture %}
+            {{approve.licence_picture.url}}
+          {% endif %}
+            "
+            width="120px" class="img-fluid" alt=""></td>
           <td>
-            <div class="badge rounded-pill bg-success  ">Approved</div>
+            <div class="badge rounded-pill bg-success">Approved</div>
           </td>
         </tr>
         {% endfor %}
