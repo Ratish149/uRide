@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+uRide - Denied
+
+{% endblock title %}
+
+{% block content %}
+
+<h3 class="access_denied" style="margin-top: 300px; margin-bottom: 200px; margin-left: 100px; ">Access Denied!! Please <a href="{% url 'login' %}">Login</a> as your Role.</h3>
+
+{% endblock content %}

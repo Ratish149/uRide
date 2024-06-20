@@ -46,7 +46,7 @@ uRide - Home
 
                 <div id="items-carousel" class="owl-carousel wow fadeIn">
                     {% for car in vehicle %}
-                         
+
                     <div class="col-lg-12">
                         <div class="de-item mb30">
                             <div class="d-img">
@@ -55,19 +55,22 @@ uRide - Home
                             <div class="d-info">
                                 <div class="d-text">
                                     <a href="{% url 'car_detail' car.id %}">
-                                    <h4>{{ car.vehicle_name }}</h4>
-                                </a>
-                                <div class="d-atr-group">
-                                    <span class="d-atr"><img src="{% static 'images/icons/1-green.svg' %} " alt="" />
-                                      {{ car.vehicle_seat }}</span>
-                                    <span class="d-atr"><img src="{% static 'images/icons/fuel-green.svg' %}" alt="" />
-                                      {{car.vehicle_type }}
-                                      </span>
-                                    <span class="d-atr"><img src="{% static 'images/icons/gear-green.svg' %}" alt="" />
-                                      {{car.vehicle_gear }}</span>
-                                    <span class="d-atr"><img src="{% static 'images/icons/4-green.svg' %}" alt="" />
-                                      {{car.vehicle_model }}</span>
-                                  </div>
+                                        <h4>{{ car.vehicle_name }}</h4>
+                                    </a>
+                                    <div class="d-atr-group">
+                                        <span class="d-atr"><img src="{% static 'images/icons/1-green.svg' %} "
+                                                alt="" />
+                                            {{ car.vehicle_seat }}</span>
+                                        <span class="d-atr"><img src="{% static 'images/icons/fuel-green.svg' %}"
+                                                alt="" />
+                                            {{car.vehicle_type }}
+                                        </span>
+                                        <span class="d-atr"><img src="{% static 'images/icons/gear-green.svg' %}"
+                                                alt="" />
+                                            {{car.vehicle_gear }}</span>
+                                        <span class="d-atr"><img src="{% static 'images/icons/4-green.svg' %}" alt="" />
+                                            {{car.vehicle_model }}</span>
+                                    </div>
                                     <div class="d-price">
                                         Daily rate from <span>Rs. {{ car.price_per_day }}</span>
                                         <a class="btn-main" href="car-single.html">Rent Now</a>
@@ -84,7 +87,7 @@ uRide - Home
         </div>
     </section>
 
-   
+
 
     <section aria-label="section">
         <div class="container">
@@ -141,7 +144,7 @@ uRide - Home
         </div>
     </section>
 
-    
+
     <section id="section-fun-facts" class="bg-color text-light">
         <div class="container">
             <div class="row g-custom-x force-text-center">
@@ -244,32 +247,27 @@ uRide - Home
                             <div class="accordion-section-title" data-tab="#accordion-1">
                                 How do I get started with Car Rental?
                             </div>
-                            <div class="accordion-section-content" id="accordion-1">
-                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-                                    voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
-                                    occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
-                                    mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-                                    expedita distinctio.</p>
+                            <div class="accordion-section-content" id="accordion-1">To get started with car rental,
+                                select a vehicle from the available fleet and choose your pick-up and return dates. Make
+                                a booking by providing your details and payment information to secure the reservation.
+                                Once confirmed, you can relax and prepare for your trip. For any assistance, the
+                                customer care team is always available to help.</p>
                             </div>
                             <div class="accordion-section-title" data-tab="#accordion-2">
                                 Can I rent a car with a debit card??
                             </div>
                             <div class="accordion-section-content" id="accordion-2">
-                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-                                    voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
-                                    occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
-                                    mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-                                    expedita distinctio.</p>
+                                <p>Currently, We only accept Khalti Payment</p>
                             </div>
                             <div class="accordion-section-title" data-tab="#accordion-3">
                                 What kind of Car Rental do I need?
                             </div>
                             <div class="accordion-section-content" id="accordion-3">
-                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-                                    voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
-                                    occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
-                                    mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-                                    expedita distinctio.</p>
+                                <p>To choose the right car rental, consider the number of passengers, luggage, terrain,
+                                    and your budget. For family trips, opt for an SUV or minivan. For city driving, a
+                                    compact car works well. Luxury cars suit special occasions, while economy cars are
+                                    budget-friendly. Also, factor in fuel efficiency and any specific needs like
+                                    all-wheel drive.</p>
                             </div>
                         </div>
                     </div>
@@ -282,31 +280,20 @@ uRide - Home
                                 What is a rental car security deposit?
                             </div>
                             <div class="accordion-section-content" id="accordion-b-4">
-                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-                                    voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
-                                    occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
-                                    mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-                                    expedita distinctio.</p>
+                                <p>You have to pay through Khalti to book a car. You don't have to pay any security
+                                    deposit.</p>
                             </div>
                             <div class="accordion-section-title" data-tab="#accordion-b-5">
                                 Can I cancel or modify my reservation?
                             </div>
                             <div class="accordion-section-content" id="accordion-b-5">
-                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-                                    voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
-                                    occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
-                                    mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-                                    expedita distinctio.</p>
+                                <p>Sorry, but you can't.</p>
                             </div>
                             <div class="accordion-section-title" data-tab="#accordion-b-6">
                                 Is it possible to extend my rental period?
                             </div>
                             <div class="accordion-section-content" id="accordion-b-6">
-                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-                                    voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
-                                    occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
-                                    mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-                                    expedita distinctio.</p>
+                                <p>Sorry, but you can't. </p>
                             </div>
                         </div>
                     </div>

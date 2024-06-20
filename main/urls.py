@@ -32,14 +32,18 @@ urlpatterns = [
 
 
 
-    # Khalti Integrations
+    # Khalti Payment Integrations
     path('initiate/',views.initkhalti,name="initiate"),
     path('verify/',views.verifyKhalti,name="verify"),
 
-    # auth
+    # Authentication Section
     path('login/', views.log_in, name='login'),
     path('register/', views.register, name='register'),
     path('logout/', views.log_out, name='logout'),
+
+
+    # Auth Denied Pages
+    path('auth_denied/', views.auth_denied, name='auth_denied'),
 
 
 

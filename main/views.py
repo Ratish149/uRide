@@ -19,7 +19,7 @@ from .models import *
 
 # WEBSITE PAGES
 def home(request):
-    vehicle=Vehicle.objects.filter(available=True,isDeleted=False)
+    vehicle=Vehicle.objects.filter(available=True,isDeleted=False,approved=True)
 
     context={
         'vehicle':vehicle
@@ -31,7 +31,7 @@ def cars(request):
     vehicles = Vehicle.objects.filter(available=True,isDeleted=False,approved=True)
     searched_text=request.GET.get('searched_text')
     if searched_text:
-        vehicles = Vehicle.objects.filter(vehicle_name__icontains=searched_text,available=True,approved=True)
+        vehicles = Vehicle.objects.filter(vehicle_name__icontains=searched_text,available=True,approved=True,isDeleted=False)
 
     selected_vehicle_types = request.GET.getlist('vehicle_type')
     selected_vehicle_models = request.GET.getlist('vehicle_model')
@@ -524,7 +524,7 @@ def verifyKhalti(request):
             # send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 
             subject="Vehicle Rental Confirmation"
-            message=render_to_string('rent_confirmation.html',{'vehicle':vehicle,'date':date,'amount':new_res['total_amount'],'user':request.user})
+            message=render_to_string('pages/customer/rent_confirmation_message.html',{'vehicle':vehicle,'date':date,'amount':new_res['total_amount'],'user':request.user})
             from_email='bdevil149@gmail.com'
             recipient_list=[request.user.email,vehicle.uploaded_by.email,'ratish.shakya149@gmail.com']
             send_mail(subject, message, from_email, recipient_list, fail_silently=False)
@@ -536,3 +536,7 @@ def verifyKhalti(request):
     
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=400)
+    
+
+def auth_denied(request):
+    return render(request, 'auth/denied.html')
