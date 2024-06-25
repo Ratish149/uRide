@@ -372,18 +372,18 @@ def log_in(request):
         if not User.objects.filter(username=username).exists():
                 messages.error(request,"Username doesn't exist")
 
-        elif user is not None and user.is_admin:
+        elif user is not None and user.is_admin :
                 login(request, user)
                 return redirect('admin_profile')
-        elif user is not None and user.is_customer:
+        elif user is not None and user.is_customer and user.approved:
                 login(request, user)
                 return redirect('customer_profile')
-        elif user is not None and user.is_owner:
+        elif user is not None and user.is_owner and user.approved:
                 login(request, user)
                 return redirect('owner_profile')
         else:
                 messages.error(request,"Try again!")
-                return redirect('login_view')
+                return redirect('login')
         
     return render(request, 'auth/login.html')
 
@@ -529,7 +529,7 @@ def verifyKhalti(request):
             recipient_list=[request.user.email,vehicle.uploaded_by.email,'ratish.shakya149@gmail.com']
             send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 
-            return redirect('cars')
+            return redirect('account_booking')
         else:
             print("Payment verification failed. Khalti response:", json.dumps(new_res, indent=4))
             return JsonResponse({'error': 'Payment verification failed'}, status=400)

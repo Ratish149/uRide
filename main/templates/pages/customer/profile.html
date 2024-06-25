@@ -26,7 +26,9 @@ My Profile
 
                                 <div class="profile_img">
                                     <p>Licence Image</p>
-                                    <img src="{{profile.licence_picture.url}}" alt="">
+                                    <img src=" {% if profile.licence_picture %}
+                                    {{profile.licence_picture.url}}
+                                    {% endif %} " alt="">
                                 </div>
                                 <br>
                             </div>

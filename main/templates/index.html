@@ -73,7 +73,7 @@ uRide - Home
                                     </div>
                                     <div class="d-price">
                                         Daily rate from <span>Rs. {{ car.price_per_day }}</span>
-                                        <a class="btn-main" href="car-single.html">Rent Now</a>
+                                        <a class="btn-main" href="{% url 'booking' car.id %}">Rent Now</a>
                                     </div>
                                 </div>
                             </div>

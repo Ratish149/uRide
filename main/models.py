@@ -38,7 +38,7 @@ class User(AbstractUser):
     is_admin = models.BooleanField(default=False)
     is_customer = models.BooleanField(default=True)
     is_owner = models.BooleanField(default=False)
-    approved = models.BooleanField(default=False)
+    approved = models.BooleanField(default=True)
 
 class Vehicle(models.Model):
     vehicle_name = models.CharField(max_length=20)
@@ -61,8 +61,9 @@ class Vehicle(models.Model):
     available = models.BooleanField(default=True)
     approved = models.BooleanField(default=False)
 
-    def _str_(self):
-        return f'{self.vehicle_name} - {self.vehicle_model}'
+    
+    def __str__(self) -> str:
+        return f'{self.vehicle_name} - {self.vehicle_number}'
     
     def save(self,*args, **kwargs):
         self.vehicle_name=self.vehicle_name.capitalize()
@@ -78,7 +79,7 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=10, blank=True, null=True)
     licence_picture = models.ImageField(upload_to='licence_pictures/', blank=True, null=True,default=None)
 
-    def _str_(self):
+    def __str__(self) -> str:
         return self.user.username
 
 class Booking(models.Model):
@@ -89,16 +90,18 @@ class Booking(models.Model):
     amount = models.CharField(max_length=50)
     status = models.CharField(max_length=20, default='Ongoing')
 
+    def __str__(self) -> str:
+        return f'{self.user.username} - {self.vehicle.vehicle_name}'
+
 class BookingTransaction(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     user=models.ForeignKey(User, on_delete=models.CASCADE)
     transaction_id=models.CharField(max_length=100)
     amount = models.IntegerField()
-    # isPaid = models.BooleanField(default=False)
     rented_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return self.transaction_id
+        return f'{self.vehicle.vehicle_name} rented by {self.user.username}'
 
 
 class Review(models.Model):
@@ -109,4 +112,4 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f'{self.user.username} - {self.vehicle.vehicle_name}'
+        return f'{self.user.username} Reviewed on {self.vehicle.vehicle_name}'

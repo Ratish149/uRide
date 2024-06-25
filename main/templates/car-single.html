@@ -58,7 +58,9 @@ uRide - Cars
 
                             <article class="review-box clearfix">
                                 <figure class="rev-thumb"><img width="120px"
-                                        src="{{review.user.profile.profile_picture.url}}" alt=""></figure>
+                                        src=" {% if review.user.profile.profile_picture %}
+                                        {{review.user.profile.profile_picture.url}}
+                                        {% endif %} " alt=""></figure>
                                 <div class="rev-content">
                                     {% for i in range %}
                                     <i class="fa {% if review.rating >= i %}fa-star{% else %}fa-star-o{% endif %}"

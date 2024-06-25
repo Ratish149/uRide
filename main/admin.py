@@ -19,9 +19,20 @@ admin.site.register(CarType)
 admin.site.register(CarModel)
 admin.site.register(GearType)
 admin.site.register(Profile)
-admin.site.register(BookingTransaction)
+
+@admin.register(BookingTransaction)
+class BookingTransactionAdmin(admin.ModelAdmin):
+    list_display=('vehicle','user','amount','rented_at')
+    list_filter=('rented_at',)
+
+# admin.site.register(BookingTransaction)
 admin.site.register(Review)
-admin.site.register(Booking)
+
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    list_display=('vehicle','user','pickup_date','return_date','amount','status')
+
+# admin.site.register(Booking)
 
 
 
