@@ -63,15 +63,15 @@
 
                             <li><a href="{% url 'admin_profile' %}" class="{% if request.path == '/admin-profile/' %}
                               active
-                            {% endif %}"><i class="fa fa-user"></i>My
+                            {% endif %}"><i class="fa fa-id-card"></i>My
                                     Profile</a></li>
                             <li><a href="{% url 'vehicle_approve' %}" class="{% if request.path == '/vehicle-approve/' %}
                                         active
-                                      {% endif %}"><i class="fa fa-user"></i>Approve Vehicle</a></li>
+                                      {% endif %}"><i class="fa fa-car"></i>Approve Vehicle</a></li>
 
                             <li><a href="{% url 'user_approve' %}" class="{% if request.path == '/user-approve/' %}
                                         active
-                                      {% endif %}"><i class="fa fa-user"></i>Approve User</a></li>
+                                      {% endif %}"><i class="fa fa-user"></i>User</a></li>
 
                             <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>Sign Out</a></li>
                         </ul>

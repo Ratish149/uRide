@@ -380,7 +380,7 @@ def approve_user_detail(request,id):
 
     if request.method == 'POST':
         user=get_object_or_404(Profile,id=id)
-        user.user.approved=True
+        user.user.approved=False
         user.user.save()
         return redirect('user_approve')
     context={
