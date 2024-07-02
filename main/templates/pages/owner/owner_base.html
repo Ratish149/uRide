@@ -67,13 +67,13 @@
                             <li>
                                 <a href="{% url 'register_vehicle' %}"
                                     class="{% if request.path == '/register-vehicle/' %} active {% endif %}"><i
-                                        class="fa fa-calendar"></i>Add Vehicle</a>
+                                        class="fa fa-plus"></i>Add Vehicle</a>
                             </li>
 
                             <li>
                                 <a href="{% url 'your_vehicle' %}"
                                     class="{% if request.path == '/your-vehicle/' %} active {% endif %}"><i
-                                        class="fa fa-calendar"></i>Your Vehicle</a>
+                                        class="fa fa-car"></i>Your Vehicle</a>
                             </li>
 
                             <li>
@@ -81,6 +81,9 @@
                                     class="{% if request.path == '/on-rent/' %} active {% endif %}"><i
                                         class="fa fa-calendar"></i>On Rent</a>
                             </li>
+                            <li><a href="{% url 'change_password' %}" class="{% if request.path == '/change_password/' %}
+                                active
+                              {% endif %}"><i class="fa fa-key"></i>Change Password</a></li>
                             <li>
                                 <a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>Sign Out</a>
                             </li>

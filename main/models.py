@@ -92,7 +92,34 @@ class Booking(models.Model):
 
     def __str__(self) -> str:
         return f'{self.user.username} - {self.vehicle.vehicle_name}'
+    
+    # def save(self,*args, **kwargs):
+    #     if self.status == 'Completed':
+    #         self.vehicle.available = True
+    #         self.vehicle.rented_by = None
 
+    #         BookingHistory.objects.create(
+    #             vehicle = self.vehicle,
+    #             user = self.user,
+    #             pickup_date = self.pickup_date,
+    #             return_date = self.return_date,
+    #             amount = self.amount,
+    #             status = self.status
+    #         )
+    #     self.vehicle.save()
+    #     super().save(*args, **kwargs)
+
+
+# class BookingHistory(models.Model):
+#     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     pickup_date = models.DateField()
+#     return_date = models.DateField()
+#     amount = models.CharField(max_length=50)
+#     status = models.CharField(max_length=20)
+
+#     def __str__(self) -> str:
+#         return f'History: {self.user.username} - {self.vehicle.vehicle_name}'
 class BookingTransaction(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     user=models.ForeignKey(User, on_delete=models.CASCADE)

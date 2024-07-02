@@ -9,10 +9,13 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('cardetail/<int:pk>/', views.car_detail, name='car_detail'),
 
+
     # Customer profile
     path('profile/',views.customer_profile,name='customer_profile'),
     path('booking/<int:pk>', views.booking, name='booking'),
     path('account-booking/',views.account_booking,name='account_booking'),
+
+    path('change_password/',views.change_password,name='change_password'),
 
     # Owner Profile
     path('owner-profile/',views.owner_profile,name='owner_profile'),

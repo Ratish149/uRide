@@ -1,17 +1,21 @@
+import requests
+import json
+from uuid import uuid4
+
 from django.shortcuts import render,redirect,get_object_or_404
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-import requests
-import json
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from uuid import uuid4
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from datetime import datetime
+
 from .decorators import admin_only, customer_only, owner_only
 from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm,VehicleForm,ReviewForm,BookingForm
 from .models import *
@@ -171,6 +175,17 @@ def account_booking(request):
 
 # CUSTOMER PAGES END
 
+@login_required
+def change_password(request):
+    form=PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form=PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    return render(request,'auth/change_password.html',{'form':form})
+
+
 # OWNER PAGES
 # Display owner profile and Update profile
 @owner_only
@@ -262,7 +277,7 @@ def on_rent(request):
 def off_rent(request,id):
     if request.method=='POST':
         vehicle=Vehicle.objects.get(id=id,available=False)
-        booking = Booking.objects.get(vehicle__id=id)
+        booking = Booking.objects.get(vehicle__id=id,status="Ongoing")
         vehicle.available=True
         vehicle.rented_by=None
         booking.status="Completed"
@@ -415,28 +430,33 @@ def log_out(request):
 # Initiate khalti payment
 @csrf_exempt
 def initkhalti(request):
+    print("Entering initkhalti")
     if request.method=='POST':
+        print("Request method is POST")
         url = "https://a.khalti.com/api/v2/epayment/initiate/"
-
         return_url = "http://127.0.0.1:8000/verify/"
-        
-        name=request.POST.get('name')
-        email=request.POST.get('email')
-        phone=request.POST.get('phone')
-        amount=request.POST.get('total_price')
-        message=request.POST.get('message')
-        vehicle_id=request.POST.get('vehicle_id')
-        owned_by=request.POST.get('owned_by')
-        pickup_date=request.POST.get('pickup_date')
-        return_date=request.POST.get('return_date')
-        purchase_order_id=request.POST.get('vehicle_id')
-        purchase_order_name=request.POST.get('vehicle_name')
-
+         
+        try:
+             name=request.POST.get('name')
+             email=request.POST.get('email')
+             phone=request.POST.get('phone')
+             amount=request.POST.get('total_price')
+             message=request.POST.get('message')
+             vehicle_id=request.POST.get('vehicle_id')
+             owned_by=request.POST.get('owned_by')
+             pickup_date=request.POST.get('pickup_date')
+             return_date=request.POST.get('return_date')
+             purchase_order_id=request.POST.get('vehicle_id')
+             purchase_order_name=request.POST.get('vehicle_name')
+        except KeyError as e:
+            print("Missing parameter: " + str(e))
+            return JsonResponse({"message": "Missing parameter: " + str(e)}, status=400)
+ 
         transaction_id=str(uuid4())
-
+ 
         print(name,email,phone,amount,message,vehicle_id,owned_by,purchase_order_id,purchase_order_name)
         print(return_url)
-
+ 
         payload = json.dumps({
             "return_url": return_url,
             "website_url": "http://127.0.0.1:8000/",
@@ -456,10 +476,15 @@ def initkhalti(request):
         }
 
         response = requests.request("POST", url, headers=headers, data=payload)
-
-        new_res=json.loads(response.text)
-        print(new_res)
-    
+ 
+        print("Response received")
+        print(response.text)
+        try:
+            new_res=json.loads(response.text)
+            print(new_res)
+        except:
+            return JsonResponse({'error': 'Failed to initiate payment', 'details': response.text}, status=500)
+     
         if response.status_code == 200 and 'payment_url' in new_res:
             vehicle=Vehicle.objects.get(id=purchase_order_id)
             Booking.objects.create(
@@ -470,38 +495,53 @@ def initkhalti(request):
                 amount=amount,
                 status='Ongoing'
             )
+            print("Redirecting to payment url")
             return redirect(new_res['payment_url'])
         else:
+            print("Failed to initiate payment")
             return JsonResponse({'error': 'Failed to initiate payment', 'details': new_res}, status=400)
-
+ 
+    print("Invalid request method")
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
 
 # Verify khalti payment and save to the model
 @csrf_exempt
 def verifyKhalti(request):
-    url = "https://a.khalti.com/api/v2/epayment/lookup/"
-
+    print("Entering verifyKhalti")
     if request.method == 'GET':
+        print("Request method is GET")
+        url = "https://a.khalti.com/api/v2/epayment/lookup/"
+
         pidx=request.GET.get('pidx')
+        transaction_id=request.GET.get('transaction_id')
+        purchase_order_id=request.GET.get('purchase_order_id')
+        
+        if not pidx or not transaction_id or not purchase_order_id:
+            print("Missing required parameters")
+            return JsonResponse({'error': 'Missing required parameters'}, status=400)
 
         headers = {
             'Authorization': 'key 1ecf6a98463d4ecf8e77ba8a9bdd16d0',
             'Content-Type': 'application/json',
         }
 
-        transaction_id=request.GET.get('transaction_id')
-        purchase_order_id=request.GET.get('purchase_order_id')
-
         payload= json.dumps({
             "pidx": pidx
         })
 
         response = requests.request("POST", url, headers=headers, data=payload)
-  
-        new_res=json.loads(response.text)
-        print(new_res)
+        print("Response received")
+        print(response.text)
+        try:
+            new_res=json.loads(response.text)
+            print(new_res)
+        except json.JSONDecodeError:
+            print("Failed to verify payment")
+            return JsonResponse({'error': 'Failed to verify payment', 'details': response.text}, status=500)
 
         if new_res['status'] == 'Completed':
+            print("Payment verification successful")
             vehicle=Vehicle.objects.get(id=purchase_order_id)
             vehicle.available=False
             vehicle.rented_by=request.user
@@ -522,7 +562,7 @@ def verifyKhalti(request):
             # from_email='bdevil149@gmail.com'
             # recipient_list=[vehicle.uploaded_by.email,'ratish.shakya149@gmail.com']
             # send_mail(subject, message, from_email, recipient_list, fail_silently=False)
-
+            
             subject="Vehicle Rental Confirmation"
             message=render_to_string('pages/customer/rent_confirmation_message.html',{'vehicle':vehicle,'date':date,'amount':new_res['total_amount'],'user':request.user})
             from_email='bdevil149@gmail.com'
@@ -535,6 +575,7 @@ def verifyKhalti(request):
             return JsonResponse({'error': 'Payment verification failed'}, status=400)
     
     else:
+        print("Invalid request method")
         return JsonResponse({'error': 'Invalid request method'}, status=400)
     
 
