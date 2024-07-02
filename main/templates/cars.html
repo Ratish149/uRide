@@ -4,6 +4,7 @@
 uRide - Vehicle
 {%endblock title %}
 
+
 {% block content %}
 
 <!-- content begin -->
@@ -43,8 +44,6 @@ uRide - Vehicle
                         <label for="vehicle_type_{{ type.id }}">{{ type.name }}</label>
                     </div>
                 {% endfor %}
-
-
               </div>
             </div>
 
@@ -108,22 +107,23 @@ uRide - Vehicle
               <div class="price-input">
                 <div class="field">
                   <span>Min</span>
-                  <input type="number" class="input-min" value="0" />
+                  <input type="number" name="min_price" class="input-min" value="{{min_price}}" />
                 </div>
                 <div class="field">
                   <span>Max</span>
-                  <input type="number" class="input-max" value="2000" />
+                  <input type="number" name="max_price" class="input-max" value="{{max_price}}" />
                 </div>
               </div>
               <div class="slider">
                 <div class="progress"></div>
               </div>
               <div class="range-input">
-                <input type="range" class="range-min" min="0" max="2000" value="0" step="1" />
-                <input type="range" class="range-max" min="0" max="2000" value="2000" step="1" />
+                <input type="range" class="range-min" min="0" max="5000" value="{{min_price}}" step="1" />
+                <input type="range" class="range-max" min="0" max="5000" value="{{max_price}}" step="1" />
               </div>
               
             </div>
+              
           </form>
         </div>
         
@@ -186,5 +186,41 @@ uRide - Vehicle
   function submitForm() {
     document.getElementById('filter-form').submit();
   }
+ 
+  function updateSlider() {
+      const minInput = document.querySelector('.range-min');
+      const maxInput = document.querySelector('.range-max');
+      const minValue = document.querySelector('.input-min');
+      const maxValue = document.querySelector('.input-max');
+      const progress = document.querySelector('.progress');
+
+      minInput.addEventListener('input', () => {
+          minValue.value = minInput.value;
+          updateProgress();
+          submitForm();
+      });
+
+      maxInput.addEventListener('input', () => {
+          maxValue.value = maxInput.value;
+          updateProgress();
+          submitForm();
+      });
+
+      function updateProgress() {
+          const min = parseInt(minInput.value);
+          const max = parseInt(maxInput.value);
+          progress.style.left = (min / minInput.max) * 100 + '%';
+          progress.style.right = 100 - (max / maxInput.max) * 100 + '%';
+      }
+
+      function submitForm() {
+          document.getElementById('filter-form').submit();
+      }
+
+      updateProgress();
+  }
+
+  window.onload = updateSlider;
+
 </script>
 {% endblock content %}

@@ -33,7 +33,11 @@ def home(request):
 # Display all cars including search function and filter function
 def cars(request):
     vehicles = Vehicle.objects.filter(available=True,isDeleted=False,approved=True)
+
     searched_text=request.GET.get('searched_text')
+
+    
+
     if searched_text:
         vehicles = Vehicle.objects.filter(vehicle_name__icontains=searched_text,available=True,approved=True,isDeleted=False)
 
@@ -59,6 +63,20 @@ def cars(request):
         else:
             vehicles = vehicles.filter(vehicle_seat__in=seat_filters,available=True,isDeleted=False,approved=True)
 
+    min_price = request.GET.get('min_price',0)
+    max_price = request.GET.get('max_price',5000)
+
+    try:
+        min_price=float(min_price)
+    except:
+        min_price=0
+
+    try:
+        max_price=float(max_price)
+    except:
+        max_price=5000
+
+    vehicles = vehicles.filter(price_per_day__gte=min_price,price_per_day__lte=max_price,available=True,isDeleted=False,approved=True)
     context = {
         'vehicle_types': vehicle_types,
         'vehicle_models': vehicle_models,
@@ -68,6 +86,8 @@ def cars(request):
         'selected_vehicle_models': list(map(int, selected_vehicle_models)),
         'selected_gear_types': list(map(int, selected_gear_types)),
         'selected_car_seats': selected_car_seats,
+        'min_price': min_price,
+        'max_price': max_price
     }
     return render(request, 'cars.html',context)
 
