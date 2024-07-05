@@ -21,7 +21,12 @@ from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm,VehicleForm,Rev
 from .models import *
 
 
-# WEBSITE PAGES
+''' 
+================================================== 
+                Pages Start
+================================================== 
+'''
+# Display Home Page
 def home(request):
     vehicle=Vehicle.objects.filter(available=True,isDeleted=False,approved=True)
 
@@ -35,8 +40,6 @@ def cars(request):
     vehicles = Vehicle.objects.filter(available=True,isDeleted=False,approved=True)
 
     searched_text=request.GET.get('searched_text')
-
-    
 
     if searched_text:
         vehicles = Vehicle.objects.filter(vehicle_name__icontains=searched_text,available=True,approved=True,isDeleted=False)
@@ -145,9 +148,17 @@ def contact(request):
 def about(request):
     return render(request, 'about.html')
 
-# WEBSITE PAGES END
+''' 
+================================================== 
+                Pages End
+================================================== 
+'''
 
-# CUSTOMER PAGES
+''' 
+================================================== 
+                Customer Page 
+================================================== 
+'''
 # Display customer profile and Update profile
 @customer_only
 def customer_profile(request):
@@ -171,17 +182,7 @@ def customer_profile(request):
     }
     return render(request, 'pages/customer/profile.html', context)
 
-# Display booking page
-@customer_only
-def booking(request,pk):
-    vehicle=Vehicle.objects.get(id=pk)
-    bookingform = BookingForm()
-    context={
-        'vehicle':vehicle,
-        'booking':bookingform
-    }
-    return render(request, 'pages/customer/booking.html',context)
-
+# Customer vehicle rent history
 @customer_only
 def account_booking(request):
     vehicle=Vehicle.objects.filter(rented_by=request.user,isDeleted=False,approved=True)
@@ -192,21 +193,30 @@ def account_booking(request):
     }
     return render(request, 'pages/customer/account-booking.html',context)
 
-
-# CUSTOMER PAGES END
-
+# Display booking page
 @login_required
-def change_password(request):
-    form=PasswordChangeForm(request.user)
-    if request.method == 'POST':
-        form=PasswordChangeForm(user=request.user, data=request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    return render(request,'auth/change_password.html',{'form':form})
+def booking(request,pk):
+    vehicle=Vehicle.objects.get(id=pk)
+    bookingform = BookingForm()
+    context={
+        'vehicle':vehicle,
+        'booking':bookingform
+    }
+    return render(request, 'pages/customer/booking.html',context)
+
+''' 
+================================================== 
+            Customer Pages End
+================================================== 
+'''
 
 
-# OWNER PAGES
+
+''' 
+================================================== 
+            Owner Pages
+================================================== 
+'''
 # Display owner profile and Update profile
 @owner_only
 def owner_profile(request):
@@ -283,6 +293,7 @@ def delete_vehicle(request,id):
     vehicle.save()
     return redirect('your_vehicle')
 
+# Display Rented vehicle
 @owner_only
 def on_rent(request):
     vehicle=Vehicle.objects.filter(uploaded_by=request.user,available=False,isDeleted=False)
@@ -293,6 +304,7 @@ def on_rent(request):
     }
     return render(request, 'pages/owner/on_rent.html', context)
 
+# Mark as returned
 @owner_only
 def off_rent(request,id):
     if request.method=='POST':
@@ -306,11 +318,19 @@ def off_rent(request,id):
     return redirect('on_rent')
 
 
-# OWNER PAGES END
+''' 
+================================================== 
+            Owner Pages End
+================================================== 
+'''
 
+''' 
+================================================== 
+            Admin Pages
+================================================== 
+'''
 
-# ADMIN PAGE
-
+# Display admin profile
 @admin_only
 def admin_profile(request):
     user_form = UserUpdateForm(instance=request.user)
@@ -333,6 +353,7 @@ def admin_profile(request):
     }
     return render(request, 'pages/admin/admin_profile.html',context)
 
+# Display vehicle to approve
 @admin_only
 def approve_vehicle(request):
     vehicles=Vehicle.objects.filter(approved=False,isDeleted=False)
@@ -346,6 +367,7 @@ def approve_vehicle(request):
     }
     return render(request, 'pages/admin/vehicle_approve.html',context)
 
+# Vehicle detail to approve
 @admin_only
 def approve_vehicle_detail(request,id):
     vehicle=Vehicle.objects.get(id=id)
@@ -361,6 +383,7 @@ def approve_vehicle_detail(request,id):
     }
     return render(request, 'pages/admin/approve_vehicle_detail.html',context)
 
+# Display Users
 @admin_only
 def approve_user(request):
 
@@ -374,6 +397,7 @@ def approve_user(request):
     }
     return render(request, 'pages/admin/user_approve.html',context)
 
+# Approve User
 @admin_only
 def approve_user_detail(request,id):
     user=Profile.objects.get(id=id)
@@ -391,9 +415,17 @@ def approve_user_detail(request,id):
     return render(request, 'pages/admin/approve_user_detail.html',context)
 
 
-# ADMIN PAGE END
+''' 
+================================================== 
+            Admin Pages End
+================================================== 
+'''
 
-
+''' 
+================================================== 
+            Authentication Pages
+================================================== 
+'''
 # AUTHENTICATION PAGES
 # Login user based on its role
 def log_in(request):
@@ -443,10 +475,29 @@ def log_out(request):
     logout(request)
     return redirect('login')
 
+# Change Password
+@login_required
+def change_password(request):
+    form=PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form=PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    return render(request,'auth/change_password.html',{'form':form})
 
-# AUTHENTICATION PAGES END
+''' 
+================================================== 
+            Authentication Pages End
+================================================== 
+'''
 
-# KHALTI PAYMENT INTEGRATION
+''' 
+================================================== 
+        Khalti Payment Integrations
+================================================== 
+'''
+
 # Initiate khalti payment
 @csrf_exempt
 def initkhalti(request):
@@ -567,7 +618,7 @@ def verifyKhalti(request):
             vehicle.rented_by=request.user
             vehicle.save()
 
-            booking = Booking.objects.get(user=request.user)
+            booking = Booking.objects.get(user=request.user,vehicle=vehicle,status='Ongoing')
             booking.status="Completed"
 
             BookingTransaction.objects.create(
@@ -577,17 +628,14 @@ def verifyKhalti(request):
                 user=vehicle.rented_by
             )
             date=datetime.now()
-            # subject="Vehicle Rented"
-            # message=f"Your vehicle {vehicle.vehicle_name} has been successfully rented by {request.user.username} . Thank you for using our service."
-            # from_email='bdevil149@gmail.com'
-            # recipient_list=[vehicle.uploaded_by.email,'ratish.shakya149@gmail.com']
-            # send_mail(subject, message, from_email, recipient_list, fail_silently=False)
             
             subject="Vehicle Rental Confirmation"
-            message=render_to_string('pages/customer/rent_confirmation_message.html',{'vehicle':vehicle,'date':date,'amount':new_res['total_amount'],'user':request.user})
+            message=render_to_string('pages/customer/rent_confirmation_message.html',{'vehicle':vehicle,'date':date,'amount':new_res['total_amount'],'user':request.user,'transaction_id':transaction_id},)
             from_email='bdevil149@gmail.com'
             recipient_list=[request.user.email,vehicle.uploaded_by.email,'ratish.shakya149@gmail.com']
             send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+            
+            messages.success(request,f"{vehicle.vehicle_name} has been successfully rented!!")
 
             return redirect('account_booking')
         else:
@@ -598,6 +646,6 @@ def verifyKhalti(request):
         print("Invalid request method")
         return JsonResponse({'error': 'Invalid request method'}, status=400)
     
-
+# Auth Denied Page
 def auth_denied(request):
     return render(request, 'auth/denied.html')

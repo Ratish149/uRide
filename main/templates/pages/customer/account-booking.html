@@ -1,7 +1,7 @@
 {% extends "pages/customer/profile_base.html" %}
 
 {% block web_title %}
-  My Orders
+My Orders
 {% endblock web_title %}
 
 {% block profile_title %}
@@ -9,58 +9,73 @@ My Orders
 {% endblock profile_title %}
 {% block profile_content %}
 
-                        <div class="col-lg-9">
+<div class="col-lg-9">
 
-                            <div class="card padding30 rounded-5 mb25">
-                                <h4>Your Orders</h4>
+  <div class="card padding30 rounded-5 mb25">
+    <h4>Your Orders</h4>
 
-                                <table class="table de-table">
-                                  <thead>
-                                    <tr>
-                                      <th scope="col"><span class="fs-12 text-gray">Order ID</span></th>
-                                      <th scope="col"><span class="fs-12 text-gray">Car Name</span></th>
-                                      <th scope="col"><span class="fs-12 text-gray">Pick Up Date</span></th>
-                                      <th scope="col"><span class="fs-12 text-gray">Return Date</span></th>
-                                      <th scope="col"><span class="fs-12 text-gray">Owner</span></th>
-                                      <th scope="col"><span class="fs-12 text-gray">Amount</span></th>
-                                      <th scope="col"><span class="fs-12 text-gray">Status</span></th>
+    {% if messages %}
+    {% for message in messages %}
 
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {% for i in vehicle %}
-                                    <tr>
-                                      <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">{{i.id}}</div></td>
-                                      <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">{{i.vehicle.vehicle_name}} - {{i.vehicle.vehicle_number}}</span></td>
-                                      <td><span class="d-lg-none d-sm-block">Pick Up Date</span>{{i.pickup_date}}</td>
-                                      <td><span class="d-lg-none d-sm-block">Return Date</span>{{i.return_date}}</td>
-                                      <td><span class="d-lg-none d-sm-block">Owner</span>{{i.vehicle.uploaded_by}}</td>
-                                      <td><span class="d-lg-none d-sm-block">Amount</span>{{i.amount}}</td>
-                                      
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>{{message}}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 
-                                      
-                                      
-                                        {% if i.status == "Ongoing" %}
-                                        <td><div class="badge rounded-pill bg-warning">Ongoing</div></td>
-                                        {% elif i.status == "Completed" %}
-                                      <td><div class="badge rounded-pill bg-success">Completed</div></td>
+    {% endfor %}
 
-                                        {% endif %}
-                                      
-                                    </tr>
-                                    {% endfor %}
-                                    
-                                  </tbody>
-                                </table>
-                            </div>
+    {% endif %}
 
-                        </div>
-                    </div>
-                </div>
-            </section>
-			
-			
-        </div>
-        <!-- content close -->
-        {% endblock profile_content %}
-    
+    <table class="table de-table">
+      <thead>
+        <tr>
+          <th scope="col"><span class="fs-12 text-gray">Order ID</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Car Name</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Pick Up Date</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Return Date</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Owner</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Amount</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Status</span></th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in vehicle %}
+        <tr>
+          <td><span class="d-lg-none d-sm-block">Order ID</span>
+            <div class="badge bg-gray-100 text-dark">{{i.id}}</div>
+          </td>
+          <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">{{i.vehicle.vehicle_name}} -
+              {{i.vehicle.vehicle_number}}</span></td>
+          <td><span class="d-lg-none d-sm-block">Pick Up Date</span>{{i.pickup_date}}</td>
+          <td><span class="d-lg-none d-sm-block">Return Date</span>{{i.return_date}}</td>
+          <td><span class="d-lg-none d-sm-block">Owner</span>{{i.vehicle.uploaded_by}}</td>
+          <td><span class="d-lg-none d-sm-block">Amount</span>{{i.amount}}</td>
+
+          {% if i.status == "Ongoing" %}
+          <td>
+            <div class="badge rounded-pill bg-warning">Ongoing</div>
+          </td>
+          {% elif i.status == "Completed" %}
+          <td>
+            <div class="badge rounded-pill bg-success">Completed</div>
+          </td>
+
+          {% endif %}
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</div>
+</div>
+</section>
+
+
+</div>
+<!-- content close -->
+{% endblock profile_content %}

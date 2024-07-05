@@ -43,11 +43,12 @@ uRide - Login
                                         placeholder="password" />
                                 </div>
                                 <div id="submit">
-                                    <button type="submit" class="btn-main btn-fullwidth rounded-3" >Sign In</button>
-                                   
+                                    <button type="submit" class="btn-main btn-fullwidth rounded-3">Sign In</button>
+
                                 </div>
                             </form>
                             <br>
+                            <a href="{% url 'password_reset' %}"> Forgot password?</a>
                             <p>Don't have an account?<a href="{% url 'register' %}"> SignUp</a></p>
                             <div class="title-line">Or&nbsp;sign&nbsp;up&nbsp;with</div>
                             <div class="row g-2">

@@ -38,6 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'social_django',
+
 ]
 EXTERNAL_APPS = [
     'main'
@@ -53,7 +58,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
+
+]   
 
 ROOT_URLCONF = 'uRide.urls'
 
@@ -138,3 +146,6 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'bdevil149@gmail.com'
 EMAIL_HOST_PASSWORD = 'nfkn jlen xdih fwqb'
+
+
+
