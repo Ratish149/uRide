@@ -16,8 +16,10 @@ urlpatterns = [
     path('booking/<int:pk>', views.booking, name='booking'),
     path('account-booking/',views.account_booking,name='account_booking'),
 
+    # Change password
     path('change_password/',views.change_password,name='change_password'),
     
+    # Reset password
     path('password_reset',auth_views.PasswordResetView.as_view(template_name='auth/password_reset_form.html'),name='password_reset'),
     path('password_reset_done/',auth_views.PasswordResetDoneView.as_view(template_name='auth/password_reset_done.html'),name='password_reset_done'),
     path('password_reset_confirm/<uidb64>/<token>',auth_views.PasswordResetConfirmView.as_view(template_name='auth/password_reset_confirm.html'),name='password_reset_confirm'),
