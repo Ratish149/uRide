@@ -53,11 +53,11 @@ uRide - Login
                             <div class="title-line">Or&nbsp;sign&nbsp;up&nbsp;with</div>
                             <div class="row g-2">
                                 <div class="col-lg-6">
-                                    <a class="btn-sc btn-fullwidth mb10" href="#"><img
+                                    <a class="btn-sc btn-fullwidth mb10" href="{% url 'social:begin' 'google-oauth2' %}"><img
                                             src=" {% static 'images/svg/google_icon.svg' %}" alt="">Google</a>
                                 </div>
                                 <div class="col-lg-6">
-                                    <a class="btn-sc btn-fullwidth mb10" href="#"><img
+                                    <a class="btn-sc btn-fullwidth mb10" href="{% url 'social:begin' 'facebook' %}"><img
                                             src="{% static 'images/svg/facebook_icon.svg' %}" alt="">Facebook</a>
                                 </div>
                             </div>

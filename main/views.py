@@ -437,20 +437,20 @@ def log_in(request):
         user = authenticate(request,username=username, password=password)
     
         if not User.objects.filter(username=username).exists():
-                messages.error(request,"Username doesn't exist")
+            messages.error(request,"Username doesn't exist")
 
         elif user is not None and user.is_admin :
-                login(request, user)
-                return redirect('admin_profile')
+            login(request, user)
+            return redirect('admin_profile')
         elif user is not None and user.is_customer and user.approved:
-                login(request, user)
-                return redirect('customer_profile')
+            login(request, user)
+            return redirect('customer_profile')
         elif user is not None and user.is_owner and user.approved:
-                login(request, user)
-                return redirect('owner_profile')
+            login(request, user)
+            return redirect('owner_profile')
         else:
-                messages.error(request,"Try again!")
-                return redirect('login')
+            messages.error(request,"Password doesn't match.")
+            return redirect('login')
         
     return render(request, 'auth/login.html')
 

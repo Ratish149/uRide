@@ -18,21 +18,26 @@ admin.site.register(User)
 admin.site.register(CarType)
 admin.site.register(CarModel)
 admin.site.register(GearType)
-admin.site.register(Profile)
+# admin.site.register(Profile)
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display=('user','full_name','phone_number','profile_picture','licence_picture')
 
 @admin.register(BookingTransaction)
 class BookingTransactionAdmin(admin.ModelAdmin):
-    list_display=('vehicle','user','amount','rented_at')
+    list_display=('vehicle','user','amount','transaction_id','rented_at')
     list_filter=('rented_at',)
 
-# admin.site.register(BookingTransaction)
-admin.site.register(Review)
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display=('vehicle','user','rating','comment','created_at')
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
     list_display=('vehicle','user','pickup_date','return_date','amount','status')
 
-# admin.site.register(Booking)
 
 
 
